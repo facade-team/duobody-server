@@ -11,7 +11,7 @@
   "editor.tabSize": 2,
   "workbench.colorTheme": "One Dark Pro",
   "eslint.format.enable": true,
-  "workbench.iconTheme": "vs-seti",
+  "workbench.iconTheme": "material-icon-theme",
   "terminal.integrated.shell.linux": "/usr/bin/zsh",
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.fontWeight": "600",

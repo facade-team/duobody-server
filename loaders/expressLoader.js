@@ -9,7 +9,7 @@ const expressLoader = (app) => {
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(morgan('dev'))
 
-  app.use('/', api)
+  app.use('/api', api)
 }
 
 export default expressLoader
