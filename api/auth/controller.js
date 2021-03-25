@@ -43,7 +43,12 @@ export default {
 		})
 	}
 
-	User.findOneByName(name).then(create).then(count).then(assign).then(respond).catch(onError)
+	User.findOneByName(name)
+        .then(create)
+        .then(count)
+        .then(assign)
+        .then(respond)
+        .catch(onError)
     },
     login : (req, res) => {
         const { name, password } = req.body
@@ -94,7 +99,10 @@ export default {
             })
         }
 
-        User.findOneByName(name).then(check).then(respond).catch(onError)
+        User.findOneByName(name).
+            then(check)
+            .then(respond)
+            .catch(onError)
     },
     check : (req, res) => {
         res.json({
