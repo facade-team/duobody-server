@@ -8,16 +8,18 @@ export const generateSecret = () => {
     return `${adjectives[randomNumber]} ${nouns[randomNumber]}`;
 };
 
-const sendMail = (email) => {
+const sendMail = (email, secret) => {
     const options = {
       auth: {
         api_key: process.env.SENDGRID_PASSWORD
       }
     };
     const client = nodemailer.createTransport(sgTransport(options));
-    return client.sendMail(email, (err, info) => {
-      if(err) console.log(err)
-      else console.log('Message sent: ' + info.response)
+    client.sendMail(email, (err) => {
+      if(err) {
+        console.log(err)
+        return new Error()
+      }
     });
 };
 
@@ -28,9 +30,6 @@ export const sendSecretMail = (secret) => {
         subject: "Register Secret for DUOBDY !",
         html: `Hello! Your register secret code is <strong>${secret}</strong>.<br/>Copy paste on the app to register`
     };
-    console.log('2');
-    console.log(process.env.SENDGRID_PASSWORD)
-    return sendMail(email);
+    sendMail(email, secret);
+    return secret
 };
-
-export const generateToken = id => jwt.sign({ id }, process.env.JWT_SECRET);

@@ -4,14 +4,25 @@ import { sendSecretMail, generateSecret } from '../utils/util'
 const requestSecret = (req, res) => {
   const { name, password, userid } = req.body
 
-  const check = (userid) => {
-    if (userid) {
+  let newUser = null
+  const create = (user) => {
+    if (user) {
       throw new Error('user id exists')
     }
     else {
-      console.log('go!')
-      return true
+      newUser = Trainer.create(name, password, userid)
+      return newUser
     }
+  }
+
+  const setNewUser = (user) => {
+    newUser = user
+    return Promise.resolve(true)
+  }
+
+  const updateSecretCode = (secret) => {
+    console.log(secret)
+    return Trainer.findOneAndUpdate({userid}, {secret}, {new: true})
   }
 
   const respond = () => {
@@ -27,9 +38,11 @@ const requestSecret = (req, res) => {
   }
 
   Trainer.findOneByUserId(userid)
-    .then(check)
+    .then(create)
+    .then(setNewUser)
     .then(generateSecret)
     .then(sendSecretMail)
+    .then(updateSecretCode)
     .then(respond)
     .catch(onError)
 }
