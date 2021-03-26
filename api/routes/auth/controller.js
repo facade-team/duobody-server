@@ -1,55 +1,54 @@
 import jwt from 'jsonwebtoken'
-import User from '../../models/userModel'
+import User from '../../../models/userModel'
 
 export default {
-    register : (req, res) => {
+  register : (req, res) => {
     const { name, password } = req.body
-    console.log('temp')
-	let newUser = null
+    let newUser = null
 
-	const create = (user) => {
-		if (user) {
-			throw new Error('name exists')
-		}
-		else {
-			return User.create(name, password)
-		}
-	}
+    const create = (user) => {
+      if (user) {
+        throw new Error('name exists')
+      }
+      else {
+        return User.create(name, password)
+      }
+    }
 
-	const count = (user) => {
-		newUser = user
-		return User.count({}).exec()
-	}
+    const count = (user) => {
+      newUser = user
+      return User.count({}).exec()
+    }
 
-	const assign = (count) => {
-		if (count === 1) {
-			return newUser.assignAdmin()
-		}
-		else {
-			return Promise.resolve(false)
-		}
-	}
+    const assign = (count) => {
+      if (count === 1) {
+        return newUser.assignAdmin()
+      }
+      else {
+        return Promise.resolve(false)
+      }
+    }
 
-	const respond = (isAdmin) => {
-		res.json({
-			message: 'Registered successfully',
-			admin: isAdmin ? true : false
-		})
-	}
+    const respond = (isAdmin) => {
+      res.json({
+        message: 'Registered successfully',
+        admin: isAdmin ? true : false
+      })
+    }
 
-	const onError = (error) => {
-		res.status(409).json({
-			message : error.message
-		})
-	}
+    const onError = (error) => {
+      res.status(409).json({
+        message : error.message
+      })
+    }
 
-	User.findOneByName(name)
-        .then(create)
-        .then(count)
-        .then(assign)
-        .then(respond)
-        .catch(onError)
-    },
+    User.findOneByName(name)
+          .then(create)
+          .then(count)
+          .then(assign)
+          .then(respond)
+          .catch(onError)
+  },
     login : (req, res) => {
         const { name, password } = req.body
         const secret = process.env.SECRET

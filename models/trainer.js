@@ -27,4 +27,10 @@ const trainerSchema = new Schema({
   },
 })
 
-export default mongoose.Model('Trainer', trainerSchema)
+trainerSchema.statics.findOneByUserId = function (userid) {
+  return this.findOne({
+    userid,
+  }).exec()
+}
+
+export default mongoose.model('Trainer', trainerSchema)

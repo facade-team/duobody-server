@@ -1,6 +1,9 @@
 import express from 'express'
 import userRouter from './routes/userRouter'
-import auth from './auth'
+import auth from './routes/auth'
+
+//test!
+import requestSecret from "../services/auth/requestSecret"
 
 const router = express.Router()
 
@@ -11,5 +14,9 @@ router.get('/', (req, res) => {
 })
 
 router.use('/auth', auth)
+
+/*test!*/
+router.post('/test', requestSecret)
+/*test!*/
 
 export default router
