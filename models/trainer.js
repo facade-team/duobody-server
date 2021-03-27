@@ -2,35 +2,44 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 
 const { Schema } = mongoose
-const { Types: { ObjectId } } = Schema
+const {
+  Types: { ObjectId },
+} = Schema
 
-//트레이너
+// 트레이너
 const trainerSchema = new Schema({
-  //이름
+  // 이름
   name: {
     type: String,
     required: true,
     trim: true,
   },
 
-  //비밀번호
+  // 비밀번호
   password: {
     type: String,
     required: true,
     trim: true,
   },
 
-  //아이디
+  // 아이디
   userid: {
     type: String,
     required: true,
     trim: true,
   },
 
-  //시크릿 코드
+  // 시크릿 코드
   secret: {
     type: String,
-    default: null,
+    required: true,
+  },
+
+  // 시크릿 코드
+  isConfirmed: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
 })
 
@@ -40,28 +49,40 @@ trainerSchema.statics.findOneByUserId = function (userid) {
   }).exec()
 }
 
-trainerSchema.statics.create = function (name, password, userid) {
+trainerSchema.statics.findOneByUserIdAndUpdate = function (userid, secret) {
+  try {
+    this.findOneAndUpdate(
+      { userid },
+      { $set: { secret } },
+      { returnNewDocument: true }
+    )
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+trainerSchema.statics.create = function (name, password, userid, secret) {
   const encrypted = crypto
     .createHmac('sha1', process.env.SECRET)
     .update(password)
     .digest('base64')
-  
+
   const trainer = new this({
     name,
     password: encrypted,
     userid,
+    secret,
+    isConfirmed: false,
   })
-
-  console.log(`userid is :${userid}`)
   return trainer.save()
 }
 
-trainerSchema.statics.verify = function (assword) {
+trainerSchema.methods.verify = function (password) {
   const encrypted = crypto
     .createHmac('sha1', process.env.SECRET)
     .update(password)
     .digest('base64')
-  
+
   return this.password === encrypted
 }
 
