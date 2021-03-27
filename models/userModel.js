@@ -12,12 +12,6 @@ const userSchema = new mongoose.Schema({
   },
 })
 
-userSchema.statics.findOneByName = function (name) {
-  return this.findOne({
-    name,
-  }).exec()
-}
-
 userSchema.methods.assignAdmin = function () {
   this.admin = true
   return this.save()

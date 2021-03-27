@@ -30,7 +30,7 @@ export default {
     const respond = (isAdmin) => {
       res.json({
         message: 'Registered successfully',
-        admin: !!isAdmin,
+        admin: !isAdmin,
       })
     }
 
