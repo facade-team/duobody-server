@@ -2,9 +2,6 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 
 const { Schema } = mongoose
-const {
-  Types: { ObjectId },
-} = Schema
 
 // 트레이너
 const trainerSchema = new Schema({
@@ -23,7 +20,7 @@ const trainerSchema = new Schema({
   },
 
   // 아이디
-  userid: {
+  trainerId: {
     type: String,
     required: true,
     trim: true,
@@ -43,16 +40,16 @@ const trainerSchema = new Schema({
   },
 })
 
-trainerSchema.statics.findOneByUserId = function (userid) {
+trainerSchema.statics.findOneByUserId = function (trainerId) {
   return this.findOne({
-    userid,
+    trainerId,
   }).exec()
 }
 
-trainerSchema.statics.findOneByUserIdAndUpdate = function (userid, secret) {
+trainerSchema.statics.findOneByUserIdAndUpdate = function (trainerId, secret) {
   try {
     this.findOneAndUpdate(
-      { userid },
+      { trainerId },
       { $set: { secret } },
       { returnNewDocument: true }
     )
@@ -61,7 +58,7 @@ trainerSchema.statics.findOneByUserIdAndUpdate = function (userid, secret) {
   }
 }
 
-trainerSchema.statics.create = function (name, password, userid, secret) {
+trainerSchema.statics.create = function (name, password, trainerId, secret) {
   const encrypted = crypto
     .createHmac('sha1', process.env.SECRET)
     .update(password)
@@ -70,7 +67,7 @@ trainerSchema.statics.create = function (name, password, userid, secret) {
   const trainer = new this({
     name,
     password: encrypted,
-    userid,
+    trainerId,
     secret,
     isConfirmed: false,
   })

@@ -1,10 +1,10 @@
 import Trainer from '../../models/trainer'
 
 const confirmSecret = async (req, res) => {
-  const { userid, secret } = req.body
+  const { trainerId, secret } = req.body
   try {
     // trainer 조회
-    const trainer = await Trainer.findOne({ userid })
+    const trainer = await Trainer.findOne({ trainerId })
     // 실제 db에 저장된 secret 코드
     const realSecret = trainer.secret
 
@@ -21,7 +21,7 @@ const confirmSecret = async (req, res) => {
         })
       }
     } else {
-      res.json({
+      res.status(400).json({
         message: 'Wrong secret code',
       })
     }

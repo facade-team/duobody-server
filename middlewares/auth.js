@@ -4,7 +4,7 @@ const authMiddleWare = (req, res, next) => {
   // 여기에서 클라이언트의 header 중 'x-access-token'으로 저장된 토큰을 받아오거나, url쿼리에 직접 담긴 토큰을 받아옴 ㅇㅇ
   const token = req.headers['x-access-token'] || req.qurey.token
 
-  //토큰이 없다? 그러면 인증 어림도 없지
+  // 토큰이 없다? 그러면 인증 어림도 없지
   if (!token) {
     return res.status(403).json({
       success: false,
@@ -20,7 +20,7 @@ const authMiddleWare = (req, res, next) => {
     })
   })
 
-  //에러가 발생하면 중단
+  // 에러가 발생하면 중단
   const onError = (error) => {
     res.status(403).json({
       success: false,
