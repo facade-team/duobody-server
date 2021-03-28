@@ -2,14 +2,14 @@ import Trainer from '../../models/trainer'
 import { generateToken } from '../utils/util'
 
 const login = async (req, res) => {
-  const { userid, password } = req.body
+  const { trainerId, password } = req.body
 
   const check = (trainer) => {
     if (!trainer.isConfirmed) {
       throw new Error('Not verified')
     }
     if (trainer.verify(password)) {
-      const token = generateToken(userid)
+      const token = generateToken(trainerId)
       return token
     }
 
@@ -17,7 +17,7 @@ const login = async (req, res) => {
   }
 
   try {
-    const trainer = await Trainer.findOneByUserId(userid)
+    const trainer = await Trainer.findOneByUserId(trainerId)
     if (!trainer) {
       throw new Error('User does not exist')
     } else {

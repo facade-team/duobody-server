@@ -3,7 +3,7 @@ import { generateSecret, sendSecretMail } from '../utils/util'
 
 const register = async (req, res) => {
   // 클라이언트로부터 이름, 비밀번호, 아이디를 받는다
-  const { name, password, userid } = req.body
+  const { name, password, trainerId } = req.body
 
   let newUser = null
   let secret = ''
@@ -23,7 +23,7 @@ const register = async (req, res) => {
         secret = generateSecret()
 
         // trainer 생성
-        newUser = await Trainer.create(name, password, userid, secret)
+        newUser = await Trainer.create(name, password, trainerId, secret)
         updateNewUser(newUser)
       } catch (err) {
         console.log(err)
@@ -39,7 +39,7 @@ const register = async (req, res) => {
   */
 
   // #1
-  const user = await Trainer.findOneByUserId(userid)
+  const user = await Trainer.findOneByUserId(trainerId)
 
   // #2
   create(user)

@@ -33,8 +33,8 @@ export const sendSecretMail = (name, secret) => {
   sendMail(email)
 }
 
-export const generateToken = (userid) =>
-  jwt.sign({ userid }, process.env.TOKEN_SECRET, {
+export const generateToken = (trainerId) =>
+  jwt.sign({ trainerId }, process.env.TOKEN_SECRET, {
     expiresIn: '90d',
     issuer: 'duobody',
   })
