@@ -5,6 +5,9 @@ const login = async (req, res) => {
   const { userid, password } = req.body
 
   const check = (trainer) => {
+    if (!trainer.isConfirmed) {
+      throw new Error('Not verified')
+    }
     if (trainer.verify(password)) {
       const token = generateToken(userid)
       return token

@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 import sgTransport from 'nodemailer-sendgrid-transport'
 import { randomNumbers } from './words'
-// import jwt from "jsonwebtoken";
 
 export const generateSecret = () => {
   const randomNumber = Math.floor(Math.random() * randomNumbers.length)

@@ -1,7 +1,7 @@
 import Trainer from '../../models/trainer'
 import { generateSecret, sendSecretMail } from '../utils/util'
 
-const requestSecret = async (req, res) => {
+const register = async (req, res) => {
   // 클라이언트로부터 이름, 비밀번호, 아이디를 받는다
   const { name, password, userid } = req.body
 
@@ -52,4 +52,4 @@ const requestSecret = async (req, res) => {
   })
 }
 
-export default requestSecret
+export default register
