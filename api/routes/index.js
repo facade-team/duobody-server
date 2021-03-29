@@ -1,5 +1,6 @@
 import express from 'express'
 import auth from './auth/authRouter'
+import lesson from './lesson/index'
 
 const router = express.Router()
 
@@ -9,5 +10,8 @@ router.get('/', (req, res) => {
 
 // Auth
 router.use('/auth', auth)
+
+// Lesson
+router.use('/lessons', lesson)
 
 export default router
