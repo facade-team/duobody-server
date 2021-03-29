@@ -9,7 +9,7 @@ const login = async (req, res) => {
       throw new Error('Not verified')
     }
     if (trainer.verify(password)) {
-      const token = generateToken(trainerId)
+      const token = generateToken(trainer._id, trainerId)
       return token
     }
 

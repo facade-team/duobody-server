@@ -21,7 +21,7 @@ const confirmSecret = async (req, res) => {
         })
       }
     } else {
-      res.json({
+      res.status(400).json({
         message: 'Wrong secret code',
       })
     }

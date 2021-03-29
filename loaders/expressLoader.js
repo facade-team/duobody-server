@@ -1,12 +1,14 @@
 import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
+import express from 'express'
 import morgan from 'morgan'
+import cors from 'cors'
 import api from '../api/routes'
 
 const expressLoader = (app) => {
+  app.use(cors())
   app.use(cookieParser())
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
   app.use(morgan('dev'))
 
   app.use('/api', api)

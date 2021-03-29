@@ -2,9 +2,6 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 
 const { Schema } = mongoose
-const {
-  Types: { ObjectId },
-} = Schema
 
 // 트레이너
 const trainerSchema = new Schema({

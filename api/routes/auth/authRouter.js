@@ -3,6 +3,8 @@ import confirmSecret from '../../../services/auth/confirmSecret'
 import login from '../../../services/auth/login'
 import register from '../../../services/auth/register'
 
+// /api/auth router
+
 const router = express.Router()
 
 router.post('/register', register)
