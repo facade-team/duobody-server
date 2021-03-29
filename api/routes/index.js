@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 router.use('/auth', auth)
 
 // middleWare Test!
-// router.use('/test', verifyTokenMiddleware)
+router.use('/test', verifyTokenMiddleware)
 router.use('/test', check)
 
 // /api/trainer
