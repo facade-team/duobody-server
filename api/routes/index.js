@@ -1,6 +1,6 @@
 import express from 'express'
 import auth from './auth/authRouter'
-import lesson from './lesson/index'
+import inbody from './inbody/index'
 
 const router = express.Router()
 
@@ -11,7 +11,11 @@ router.get('/', (req, res) => {
 // Auth
 router.use('/auth', auth)
 
-// Lesson
-router.use('/lessons', lesson)
+// Inbody Info
+router.use('/inbodies', inbody)
 
+router.use((err, req, res, next) => {
+  console.log(err.stack)
+  res.status(500).send(JSON.stringify(err))
+})
 export default router
