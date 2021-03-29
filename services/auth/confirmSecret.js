@@ -2,34 +2,48 @@ import Trainer from '../../models/trainer'
 
 const confirmSecret = async (req, res) => {
   const { trainerId, secret } = req.body
-  try {
-    // trainer 조회
-    const trainer = await Trainer.findOne({ trainerId })
-    // 실제 db에 저장된 secret 코드
+
+  const checkIfExists = (trainer) => {
+    if (!trainer) {
+      throw new Error('Trainer does not exist')
+    } else {
+      return trainer
+    }
+  }
+
+  const checkSecret = (trainer) => {
     const realSecret = trainer.secret
 
-    if (secret === realSecret) {
-      try {
-        // secret 코드 인증 성공
-        await trainer.updateOne({ isConfirmed: true })
-        res.json({
-          message: 'Verified successfully',
-        })
-      } catch (err) {
-        res.json({
-          message: err,
-        })
+    const p = new Promise((resolve, reject) => {
+      if (realSecret === secret) {
+        resolve(trainer.updateOne({ isConfirmed: true }))
+      } else {
+        const err = new Error('Wrong secret')
+        reject(err)
       }
-    } else {
-      res.status(400).json({
-        message: 'Wrong secret code',
-      })
-    }
-  } catch (err) {
+    })
+
+    return p
+  }
+
+  const respond = () => {
     res.json({
-      message: err,
+      message: 'Verified successfully.',
     })
   }
+
+  const onError = (error) => {
+    res.status(409).json({
+      error: 409,
+      message: error.message,
+    })
+  }
+
+  Trainer.findOne({ trainerId })
+    .then(checkIfExists)
+    .then(checkSecret)
+    .then(respond)
+    .catch(onError)
 }
 
 export default confirmSecret

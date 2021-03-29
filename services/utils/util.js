@@ -18,7 +18,7 @@ const sendMail = (email) => {
   client.sendMail(email, (err) => {
     if (err) {
       console.log(err)
-      return new Error()
+      throw new Error(err)
     }
   })
 }
