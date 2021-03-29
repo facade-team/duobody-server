@@ -1,14 +1,16 @@
 import mongoose from 'mongoose'
 
 const { Schema } = mongoose
-const { Types: { ObjectId } } = Schema
+const {
+  Types: { ObjectId },
+} = Schema
 
 const sessionSchema = new Schema({
   //레슨 참조
   lid: {
     type: ObjectId,
     required: true,
-    ref: 'Lesson'
+    ref: 'Lesson',
   },
 
   //부위
@@ -28,9 +30,9 @@ const sessionSchema = new Schema({
     {
       type: ObjectId,
       required: true,
-      ref: 'Set'
-    }
-  ]
+      ref: 'Set',
+    },
+  ],
 })
 
-export default mongoose.Model('Session', sessionSchema)
+export default mongoose.model('Session', sessionSchema)

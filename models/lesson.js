@@ -1,14 +1,23 @@
 import mongoose from 'mongoose'
 
 const { Schema } = mongoose
-const { Types: { ObjectId } } = Schema
+const {
+  Types: { ObjectId },
+} = Schema
 
 const lessonSchema = new Schema({
-  //회원 참조
-  uid: {
+  //trainer 참조
+  trainerId: {
     type: ObjectId,
     required: true,
-    ref: 'Trainee'
+    ref: 'Trainer',
+  },
+
+  //trainee 참조
+  traineeId: {
+    type: ObjectId,
+    required: true,
+    ref: 'Trainee',
   },
 
   //몸무게
@@ -42,8 +51,8 @@ const lessonSchema = new Schema({
     {
       type: ObjectId,
       required: true,
-      ref: 'Session'
-    }
+      ref: 'Session',
+    },
   ],
 
   //시작시간
@@ -57,4 +66,4 @@ const lessonSchema = new Schema({
   },
 })
 
-export default mongoose.Model('Lesson', lessonSchema)
+export default mongoose.model('Lesson', lessonSchema)
