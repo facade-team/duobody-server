@@ -7,10 +7,8 @@ import trainer from './trainer/trainerRouter'
 const router = express.Router()
 
 router.get('/', (req, res) => {
-  console.log(req.decoded.userid)
   res.json({
     message: 'this is home!',
-    info: req.decoded,
   })
 })
 
@@ -18,7 +16,7 @@ router.get('/', (req, res) => {
 router.use('/auth', auth)
 
 // middleWare Test!
-router.use('/test', verifyTokenMiddleware)
+// router.use('/test', verifyTokenMiddleware)
 router.use('/test', check)
 
 // /api/trainer

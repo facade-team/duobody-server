@@ -1,4 +1,5 @@
 import express from 'express'
+import registerTest from '../../../services/auth/register_test'
 
 const router = express.Router()
 
@@ -11,5 +12,7 @@ router.get('/', (req, res) => {
     info: req.decoded,
   })
 })
+
+router.post('/registertest', registerTest)
 
 export default router
