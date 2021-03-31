@@ -1,6 +1,7 @@
 import express from 'express'
 import auth from './auth/authRouter'
-import inbody from './inbody/index'
+import inbodyRouter from './inbody'
+import sessionRouter from './session'
 
 const router = express.Router()
 
@@ -12,7 +13,9 @@ router.get('/', (req, res) => {
 router.use('/auth', auth)
 
 // Inbody Info
-router.use('/inbodies', inbody)
+router.use('/inbody', inbodyRouter)
+
+router.use('/session', sessionRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)

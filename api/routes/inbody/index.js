@@ -5,22 +5,77 @@ import {
   insertInbody,
   updateInbody,
   deleteInbody,
+  getInbodyDate,
+  getInbodyInfoByDate,
 } from '../../../services/trainerService'
+import { stringToDate } from '../../../services/date'
+import { createTestAccount } from 'nodemailer'
 
 const router = express.Router()
 
-router.get('/', (req, res, next) => {
-  res.send('hello')
-})
+router.get(
+  '/trainee/:traineeId/date/:startDate/:endDate',
+  Authenticate,
+  async (req, res, next) => {
+    try {
+      const trainerId = req.user._id
+      const traineeId = req.params.traineeId
+      let { startDate, endDate } = req.params
 
-router.get('/trainee', (req, res, next) => {
-  res.send('/trainee')
+      startDate = stringToDate(startDate)
+      endDate = stringToDate(endDate)
+
+      const result = await getInbodyInfoByDate(
+        trainerId,
+        traineeId,
+        startDate,
+        endDate
+      )
+
+      res.json(result)
+    } catch (err) {
+      console.error(err)
+      next(err)
+    }
+  }
+)
+router.get(
+  '/trainee/:traineeId/date/:startDate',
+  Authenticate,
+  async (req, res, next) => {
+    try {
+      const trainerId = req.user._id
+      const traineeId = req.params.traineeId
+      let { startDate } = req.params
+
+      startDate = stringToDate(startDate)
+      const result = await getInbodyInfoByDate(trainerId, traineeId, startDate)
+
+      res.json(result)
+    } catch (err) {
+      console.error(err)
+      next(err)
+    }
+  }
+)
+
+router.get('/trainee/:traineeId/date', Authenticate, async (req, res, next) => {
+  try {
+    const traineeId = req.params.traineeId
+    const date = await getInbodyDate(traineeId)
+
+    console.log(date)
+    res.json(date)
+  } catch (err) {
+    console.error(err)
+    next(err)
+  }
 })
 
 // /api/trainee/:traineeId/myinbody
 router.get('/trainee/:traineeId', Authenticate, async (req, res, next) => {
   /*
-  GET /api/inbodies/trainee/:traineeId/
+  GET /api/inbody/trainee/:traineeId/
   가장 최근의 인바디 정보를 가져오는 라우터
   */
   try {
@@ -38,7 +93,7 @@ router.get('/trainee/:traineeId', Authenticate, async (req, res, next) => {
 router.post('/', Authenticate, async (req, res, next) => {
   try {
     /*
-      POST /api/inbodies/
+      POST /api/inbody/
       body: {
         traineeId(hidden)
         weight,
@@ -64,7 +119,7 @@ router.post('/', Authenticate, async (req, res, next) => {
 router.patch('/:inbodyId', Authenticate, async (req, res, next) => {
   try {
     /*
-      PATCH /api/inbodies/:inbodyId
+      PATCH /api/inbody/:inbodyId
       body: {
       }
     */
@@ -82,7 +137,7 @@ router.patch('/:inbodyId', Authenticate, async (req, res, next) => {
 router.delete('/:inbodyId', Authenticate, async (req, res, next) => {
   try {
     /*
-      DELETE /api/inbodies/:inbodyId
+      DELETE /api/inbody/:inbodyId
     */
 
     const _id = req.params.inbodyId
