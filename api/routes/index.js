@@ -3,7 +3,6 @@ import check from './test/check'
 import auth from './auth/authRouter'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import trainer from './trainer/trainerRouter'
-import inbody from './inbody/index'
 import inbodyRouter from './inbody'
 import sessionRouter from './session'
 
@@ -32,7 +31,7 @@ router.use('/session', sessionRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
-  res.status(500).send(JSON.stringify(err))
+  res.status(500).json(err)
 })
 
 export default router
