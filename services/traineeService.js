@@ -71,4 +71,20 @@ export default {
       throw new Error(error)
     }
   },
+  getMyTrainerId: async (traineeId) => {
+    try {
+      const trainee = await Trainee.findById(traineeId)
+      const { trainerId } = trainee
+      return trainerId
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  deleteTrainne: async (traineeId) => {
+    try {
+      await Trainee.findOneAndDelete(traineeId)
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }

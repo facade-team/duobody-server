@@ -8,9 +8,9 @@ import isAuth from '../../../middlewares/fakeAuth'
 const router = express.Router()
 
 // /api/trainee
-router.post('/', isAuth, traineeController.createTrainee)
 router.get('/', isAuth, traineeController.readAllTrainees)
 router.get('/:traineeId', isAuth, traineeController.readOneTrainee)
+router.post('/', isAuth, traineeController.createTrainee)
 router.put('/', isAuth, traineeController.updateTrainee)
-
+router.delete('/', isAuth, traineeController.deleteTrainee)
 export default router

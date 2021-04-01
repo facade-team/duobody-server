@@ -1,6 +1,5 @@
 import config from '../config'
 import resUtil from '../utils/resUtil'
-import trainerService from '../services/traineeService'
 import traineeService from '../services/traineeService'
 
 const { CODE, MSG } = config
@@ -60,7 +59,7 @@ export default {
       return resUtil.fail(
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINEE
+        MSG.FAIL_READ_TRAINEE
       )
     }
   },
@@ -84,7 +83,16 @@ export default {
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
+    // 자신의 trainee 인지 확인
+    // console.log('1', typeof trainerId) // string
+    // console.log('2', typeof (await traineeService.getMyTrainerId(traineeId))) // object
     try {
+      if (
+        trainerId !==
+        (await traineeService.getMyTrainerId(traineeId)).toString()
+      ) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
+      }
       const trainee = await traineeService.updateTrainee(
         traineeId,
         name,
@@ -104,7 +112,30 @@ export default {
       return resUtil.fail(
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINEE
+        MSG.FAIL_UPDATE_TRAINEE
+      )
+    }
+  },
+  deleteTrainee: async (req, res) => {
+    const trainerId = req.user._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+    const { traineeId } = req.body
+
+    try {
+      // 자신의 trainee 가 맞는지 확인
+      if (
+        trainerId !==
+        (await traineeService.getMyTrainerId(traineeId)).toString()
+      ) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
+      }
+      await traineeService.deleteTrainne(traineeId)
+      return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_TRAINEE)
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_DELETE_TRAINEE
       )
     }
   },
