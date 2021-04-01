@@ -1,5 +1,6 @@
-import Trainee from '../../models/trainee'
-import Trainer from '../../models/trainer'
+import { Error } from 'mongoose'
+import Trainee from '../models/trainee'
+import Trainer from '../models/trainer'
 
 export default {
   checkTrainee: async (phoneNumber) => {
@@ -7,7 +8,7 @@ export default {
       const trainee = await Trainee.findOne({ phoneNumber })
       return trainee
     } catch (error) {
-      throw error
+      throw new Error(error)
     }
   },
   createTrainee: async (name, phoneNumber, address, age, height) => {
@@ -21,7 +22,7 @@ export default {
       })
       return trainee
     } catch (error) {
-      throw error
+      throw new Error(error)
     }
   },
   connectTrainerAndTrainee: async (trainerId, traineeId) => {
@@ -33,7 +34,7 @@ export default {
       trainee.trainerId = trainer.id
       await trainee.save()
     } catch (error) {
-      throw error
+      throw new Error(error)
     }
   },
 }

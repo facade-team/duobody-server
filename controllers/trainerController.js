@@ -1,12 +1,13 @@
 import config from '../config'
 import resUtil from '../utils/resUtil'
-import trainerService from '../services/trainer/trainerService'
+import trainerService from '../services/trainerService'
 
 const { CODE, MSG } = config
 
+const trainerId = req.user._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+
 export default {
   createTrainee: async (req, res) => {
-    const trainerId = req.user._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
     const { name, phoneNumber, address, age, height } = req.body
     // 모든 값이 null 이 아닌지 확인 -> 하나라도 null 이면 안 됨
     if (!name || !phoneNumber || !address || !age || !height) {
@@ -44,4 +45,5 @@ export default {
       )
     }
   },
+  readTrainee: async (req, res) => {},
 }
