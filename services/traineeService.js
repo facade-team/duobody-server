@@ -1,4 +1,5 @@
 import { Error } from 'mongoose'
+import trainee from '../models/trainee'
 import Trainee from '../models/trainee'
 import Trainer from '../models/trainer'
 
@@ -33,6 +34,14 @@ export default {
       await trainer.save()
       trainee.trainerId = trainer.id
       await trainee.save()
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  readAllTrainees: async () => {
+    try {
+      const traineeList = await Trainee.find({})
+      return traineeList
     } catch (error) {
       throw new Error(error)
     }
