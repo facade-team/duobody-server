@@ -1,6 +1,7 @@
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import trainerService from '../services/traineeService'
+import traineeService from '../services/traineeService'
 
 const { CODE, MSG } = config
 
@@ -45,11 +46,9 @@ export default {
     }
   },
   readAllTrainees: async (req, res) => {
-    const trainerId = req.user._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
-
     // DB에서 모든 trainee 불러옴
     try {
-      const traineeList = await trainerService.readAllTrainees
+      const traineeList = await trainerService.readAllTrainees()
       return resUtil.success(
         res,
         CODE.OK,
@@ -65,5 +64,48 @@ export default {
       )
     }
   },
-  readOneTrainee: async (req, res) => {},
+  readOneTrainee: async (req, res) => {
+    const {
+      params: { traineeId },
+    } = req
+    try {
+      const trainee = await trainerService.readOneTrainee(traineeId)
+      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_TRAINEE, trainee)
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.OUT_OF_VALUE)
+    }
+  },
+  // request : name, phoneNumber, address, age, height, traineeId
+  updateTrainee: async (req, res) => {
+    const trainerId = req.user._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+    // form 데이터 값 받아오고 에러핸들링
+    const { name, phoneNumber, address, age, height, traineeId } = req.body
+    if (!name || !phoneNumber || !address || !age || !height) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+    }
+    try {
+      const trainee = await traineeService.updateTrainee(
+        traineeId,
+        name,
+        phoneNumber,
+        address,
+        age,
+        height
+      )
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_UPDATE_TRAINEE,
+        trainee
+      )
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_CREATE_TRAINEE
+      )
+    }
+  },
 }
