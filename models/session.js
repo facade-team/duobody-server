@@ -6,12 +6,11 @@ const {
 } = Schema
 
 const sessionSchema = new Schema({
-  //레슨 참조
-  lid: {
+  //trainee 참조
+  traineeId: {
     type: ObjectId,
-    required: true,
-    ref: 'Lesson',
-  },
+    required: true
+  }
 
   //부위
   part: {
