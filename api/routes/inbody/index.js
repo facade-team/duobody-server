@@ -1,6 +1,6 @@
 import express from 'express'
 import { createTestAccount } from 'nodemailer'
-import Authenticate from '../middlewares/Authenticate'
+import Authenticate from '../../../middlewares/Authenticate'
 import {
   getLatestInbody,
   insertInbody,
