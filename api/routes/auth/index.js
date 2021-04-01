@@ -1,16 +1,14 @@
 import express from 'express'
-import confirmSecret from '../../../services/auth/confirmSecret'
-import login from '../../../services/auth/login'
-import register from '../../../services/auth/register'
+import authController from '../../../controllers/authController'
 
 // /api/auth router
 
 const router = express.Router()
 
-router.post('/register', register)
+router.post('/register', authController.register)
 
-router.post('/confirmsecret', confirmSecret)
+router.post('/confirmsecret', authController.confirmSecret)
 
-router.post('/login', login)
+router.post('/login', authController.login)
 
 export default router
