@@ -6,37 +6,23 @@ const {
 } = Schema
 
 const lessonSchema = new Schema({
-  // 회원 참조
-  uid: {
+  // trainer 참조
+  trainerId: {
+    type: ObjectId,
+    required: true,
+    ref: 'Trainer',
+  },
+
+  // trainee 참조
+  traineeId: {
     type: ObjectId,
     required: true,
     ref: 'Trainee',
   },
 
-  // 몸무게
-  weight: {
-    type: Number,
-  },
-
-  // bmi
-  bmi: {
-    type: Number,
-  },
-
-  // 체지방
-  fat: {
-    type: Number,
-  },
-
-  // 골격근량
-  skeletalMuscle: {
-    type: Number,
-  },
-
   // 날짜
   date: {
     type: Date,
-    required: true,
   },
 
   // 세션 참조 배열
@@ -59,4 +45,4 @@ const lessonSchema = new Schema({
   },
 })
 
-export default mongoose.Model('Lesson', lessonSchema)
+export default mongoose.model('Lesson', lessonSchema)
