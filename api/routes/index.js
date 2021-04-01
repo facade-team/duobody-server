@@ -1,6 +1,6 @@
 import express from 'express'
 import check from './test/check'
-import auth from './auth/authRouter'
+import auth from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import trainer from './trainer/trainerRouter'
 import inbodyRouter from './inbody'
