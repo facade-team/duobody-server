@@ -7,7 +7,7 @@ export default {
       const trainee = await Trainee.findOne({ phoneNumber })
       return trainee
     } catch (error) {
-      throw error
+      throw new Error(error)
     }
   },
   createTrainee: async (name, phoneNumber, address, age, height) => {
