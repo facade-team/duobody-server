@@ -1,14 +1,16 @@
 import mongoose from 'mongoose'
 
 const { Schema } = mongoose
-const { Types: { ObjectId } } = Schema
+const {
+  Types: { ObjectId },
+} = Schema
 
 const setSchema = new Schema({
   //세션 참조
   sid: {
     type: ObjectId,
     required: true,
-    ref: 'Session'
+    ref: 'Session',
   },
 
   //무게
@@ -24,4 +26,4 @@ const setSchema = new Schema({
   },
 })
 
-export default mongoose.Model('Set', setSchema)
+export default mongoose.model('Set', setSchema)
