@@ -51,5 +51,13 @@ export default {
     FAIL_VERIFY: '인증에 실패하였습니다',
     SUCCESS_LOGIN: '로그인에 성공하였습니다',
     FAIL_LOGIN: '로그인에 실패하였습니다',
+    SUCCESS_READ_INBODY: 'Inbody 조회에 성공하였습니다',
+    SUCCESS_CREATE_INBODY: 'Inbody 생성에 성공하였습니다',
+    SUCCESS_UPDATE_INBODY: 'Inbody 수정에 성공하였습니다',
+    SUCCESS_DELETE_INBODY: 'Inbody 삭제에 성공하였습니다',
+    FAIL_CREATE_INBODY: 'Inbody 생성에 실패하였습니다',
+    FAIL_READ_INBODY: 'Inbody 조회에 실패하였습니다',
+    FAIL_UPDATE_INBODY: 'Inbody 수정에 실패하였습니다',
+    FAIL_DELETE_INBODY: 'Inbody 삭제에 실패하였습니다',
   },
 }
