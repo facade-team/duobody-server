@@ -10,7 +10,6 @@ const traineeSchema = new Schema({
   // 트레이너 참조
   trainerId: {
     type: ObjectId,
-    required: true,
     ref: 'Trainer',
   },
 
@@ -30,9 +29,9 @@ const traineeSchema = new Schema({
     type: Number,
   },
 
-  // 생일
-  birth: {
-    type: Date,
+  // 나이
+  age: {
+    type: Number,
   },
 
   // 핸드폰 번호
@@ -50,6 +49,9 @@ const traineeSchema = new Schema({
     type: String,
   },
 
+  // 목표하고 특이사항 필드는 trainee 생성 시에 받지말고,
+  // 나중에 etc 탭에서 따로 받을거임
+
   // 특이사항
   note: {
     type: String,
@@ -61,4 +63,4 @@ const traineeSchema = new Schema({
   },
 })
 
-export default mongoose.Model('Trainee', traineeSchema)
+export default mongoose.model('Trainee', traineeSchema)
