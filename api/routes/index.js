@@ -31,7 +31,7 @@ router.use('/session', sessionRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
-  res.status(500).send(JSON.stringify(err))
+  res.status(500).json(err)
 })
 
 export default router
