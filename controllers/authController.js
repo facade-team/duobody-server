@@ -134,7 +134,8 @@ export default {
       .then(verifyPassword)
       .then(passValues)
       .then((token) => {
-        console.log(newTrainer)
+        console.log('token', token)
+        // console.log(newTrainer)
         res.json({
           success: true,
           statusCode: CODE.CREATED,

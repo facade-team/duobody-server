@@ -1,6 +1,8 @@
-import { Error } from 'mongoose'
+import mongoose from 'mongoose'
 import Trainee from '../models/trainee'
 import Trainer from '../models/trainer'
+
+const { Error } = mongoose
 
 export default {
   checkTrainee: async (phoneNumber) => {
@@ -53,6 +55,7 @@ export default {
       throw new Error(error)
     }
   },
+  // TODO: update 할 때, DB 에 존재하는 값이 있는지 중복확인해야함
   updateTrainee: async (traineeId, name, phoneNumber, address, age, height) => {
     try {
       const trainee = await Trainee.findByIdAndUpdate(
@@ -73,7 +76,10 @@ export default {
   },
   getMyTrainerId: async (traineeId) => {
     try {
-      const trainee = await Trainee.findById(traineeId)
+      const trainee = await Trainee.findById(mongoose.Types.ObjectId(traineeId))
+      if (!trainee) {
+        return
+      }
       const { trainerId } = trainee
       return trainerId
     } catch (error) {
@@ -82,7 +88,7 @@ export default {
   },
   deleteTrainne: async (traineeId) => {
     try {
-      await Trainee.findOneAndDelete(traineeId)
+      await Trainee.findByIdAndDelete(mongoose.Types.ObjectId(traineeId))
     } catch (error) {
       throw new Error(error)
     }

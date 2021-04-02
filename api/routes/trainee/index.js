@@ -1,7 +1,8 @@
 /* eslint-disable import/no-named-as-default */
 import express from 'express'
 import traineeController from '../../../controllers/traineeController'
-import isAuth from '../../../middlewares/fakeAuth'
+// import isAuth from '../../../middlewares/fakeAuth'
+import isAuth from '../../../middlewares/verifyToken'
 
 // /api/trainee router
 
