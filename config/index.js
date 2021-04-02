@@ -48,6 +48,7 @@ export default {
     NOT_EXIST_TRAINER: '존재하는 Trainer가 아닙니다',
     FAIL_CONFIRM_SECRET: 'Trainer Secret Code 인증에 실패하였습니다',
     WRONG_SECRET: '잘못된 비밀번호를 입력했습니다',
+    WRONG_SECRET_CODE: '잘못된 인증코드를 입력했습니다',
     FAIL_VERIFY: '인증에 실패하였습니다',
     SUCCESS_LOGIN: '로그인에 성공하였습니다',
     FAIL_LOGIN: '로그인에 실패하였습니다',

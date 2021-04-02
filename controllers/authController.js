@@ -12,140 +12,92 @@ import resUtil from '../utils/resUtil'
 const { CODE, MSG } = config
 
 export default {
-  register: (req, res) => {
-    // test below
+  register: async (req, res) => {
     const { name, password, trainerId } = req.body
-    let secret = ''
-
-    const create = (trainer) => {
+    try {
+      const trainer = await Trainer.findOne({ trainerId })
       if (trainer) {
-        throw new Error(`${MSG.EXIST_TRAINER}`)
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.EXIST_TRAINER)
       }
-      secret = generateSecret()
-      return authService.create(name, password, trainerId, secret)
-    }
-    const execSendSecretMail = (trainer) => {
+      const secret = generateSecret()
+      const createdTrainer = await authService.create(
+        name,
+        password,
+        trainerId,
+        secret
+      )
       sendSecretMail(name, secret)
-      return Promise.resolve(trainer)
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_CREATE_TRAINER,
+        createdTrainer.id
+      )
+    } catch (err) {
+      console.log(err)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_CREATE_TRAINER
+      )
     }
-
-    Trainer.findOne({ trainerId })
-      .then(create)
-      .then(execSendSecretMail)
-      .then((trainer) => {
-        resUtil.success(
-          res,
-          CODE.CREATED,
-          MSG.SUCCESS_CREATE_TRAINER,
-          trainer.id
-        )
-      })
-      .catch((err) => {
-        console.log(err)
-        return resUtil.fail(
-          res,
-          CODE.INTERNAL_SERVER_ERROR,
-          MSG.FAIL_CREATE_TRAINER
-        )
-      })
   },
   confirmSecret: async (req, res) => {
     const { trainerId, secret } = req.body
-    let newTrainer = ''
-    const checkIfExists = (trainer) => {
+    try {
+      const trainer = await Trainer.findOne({ trainerId })
       if (!trainer) {
-        throw new Error(`${MSG.NOT_EXIST_TRAINER}`)
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NOT_EXIST_TRAINER)
       }
-      return trainer
-    }
-
-    const checkSecret = (trainer) => {
       const realSecret = trainer.secret
-
-      const p = new Promise((resolve, reject) => {
-        if (realSecret === secret) {
-          newTrainer = trainer
-          resolve(trainer.updateOne({ isConfirmed: true }))
-        } else {
-          const err = new Error(`${MSG.WRONG_SECRET}`)
-          reject(err)
-        }
-      })
-
-      return p
-    }
-
-    Trainer.findOne({ trainerId })
-      .then(checkIfExists)
-      .then(checkSecret)
-      .then(() => {
-        resUtil.success(
+      if (realSecret === secret) {
+        await trainer.updateOne({ isConfirmed: true })
+        return resUtil.success(
           res,
           CODE.CREATED,
           MSG.SUCCESS_CONFIRM_SECRET,
-          newTrainer.id
+          trainer.id
         )
-      })
-      .catch((err) => {
-        console.log(err)
-        return resUtil.fail(
-          res,
-          CODE.INTERNAL_SERVER_ERROR,
-          MSG.FAIL_CONFIRM_SECRET
-        )
-      })
-  },
-  login: (req, res) => {
-    const { trainerId, password } = req.body
-    let newTrainer = ''
-
-    const checkIfExists = (trainer) => {
-      if (!trainer) {
-        throw new Error(`${MSG.NOT_EXIST_TRAINER}`)
-      } else {
-        newTrainer = trainer
-        return trainer
       }
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_SECRET_CODE)
+    } catch (err) {
+      console.log(err)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_CREATE_TRAINER
+      )
     }
-
-    const verifyPassword = (trainer) => {
-      const p = new Promise((resolve, reject) => {
-        if (trainer.isConfirmed) {
-          if (authService.verify(password, trainer)) {
-            resolve(generateToken(trainer._id, trainerId))
-          } else {
-            const err = new Error(`${MSG.WRONG_SECRET}`)
-            reject(err)
-          }
-        } else {
-          const err = new Error(`${MSG.FAIL_VERIFY}`)
-          reject(err)
-        }
+  },
+  login: async (req, res) => {
+    const { trainerId, password } = req.body
+    try {
+      const trainer = await Trainer.findOne({ trainerId })
+      if (!trainer) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NOT_EXIST_TRAINER)
+      }
+      if (!trainer.isConfirmed) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_VERIFY)
+      }
+      if (!authService.verify(password, trainer)) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_SECRET)
+      }
+      const token = await generateToken(trainer.id, trainerId)
+      console.log(token)
+      return res.json({
+        success: true,
+        statusCode: CODE.CREATED,
+        msg: MSG.SUCCESS_LOGIN,
+        data: trainer.id,
+        token,
       })
-      return p
+    } catch (err) {
+      console.log(err)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_CREATE_TRAINER
+      )
     }
-
-    const passValues = (token) => {
-      return Promise.resolve(token, newTrainer)
-    }
-
-    Trainer.findOne({ trainerId })
-      .then(checkIfExists)
-      .then(verifyPassword)
-      .then(passValues)
-      .then((token) => {
-        console.log(newTrainer)
-        res.json({
-          success: true,
-          statusCode: CODE.CREATED,
-          msg: MSG.SUCCESS_LOGIN,
-          data: newTrainer.id,
-          token,
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-        return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_LOGIN)
-      })
   },
 }

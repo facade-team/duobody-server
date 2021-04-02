@@ -17,7 +17,6 @@ const sendMail = (email) => {
   const client = nodemailer.createTransport(sgTransport(options))
   client.sendMail(email, (err) => {
     if (err) {
-      console.log(err)
       throw new Error(err)
     }
   })
