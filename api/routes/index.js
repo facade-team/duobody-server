@@ -1,8 +1,8 @@
 import express from 'express'
 import check from './test/check'
-import auth from './auth/authRouter'
+import authRouter from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
-import trainer from './trainer/trainerRouter'
+import traineeRouter from './trainee'
 import inbodyRouter from './inbody'
 import sessionRouter from './session'
 
@@ -15,14 +15,14 @@ router.get('/', (req, res) => {
 })
 
 // /api/auth
-router.use('/auth', auth)
+router.use('/auth', authRouter)
 
 // middleWare Test!
 router.use('/test', verifyTokenMiddleware)
 router.use('/test', check)
 
-// /api/trainer
-router.use('/trainer', trainer)
+// /api/trainee
+router.use('/trainee', traineeRouter)
 
 // Inbody Info
 router.use('/inbody', inbodyRouter)
