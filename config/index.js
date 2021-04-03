@@ -60,5 +60,13 @@ export default {
     FAIL_READ_INBODY: 'Inbody 조회에 실패하였습니다',
     FAIL_UPDATE_INBODY: 'Inbody 수정에 실패하였습니다',
     FAIL_DELETE_INBODY: 'Inbody 삭제에 실패하였습니다',
+    SUCCESS_READ_SESSION: 'Session 조회에 성공하였습니다',
+    SUCCESS_CREATE_SESSION: 'Session 생성에 성공하였습니다',
+    SUCCESS_UPDATE_SESSION: 'Session 수정에 성공하였습니다',
+    SUCCESS_DELETE_SESSIOn: 'Session 삭제에 성공하였습니다',
+    FAIL_CREATE_SESSION: 'Session 생성에 실패하였습니다',
+    FAIL_READ_SESSION: 'Session 조회에 실패하였습니다',
+    FAIL_UPDATE_SESSION: 'Session 수정에 실패하였습니다',
+    FAIL_DELETE_SESSION: 'Session 삭제에 실패하였습니다',
   },
 }

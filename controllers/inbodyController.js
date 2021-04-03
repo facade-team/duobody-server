@@ -36,7 +36,11 @@ export default {
       let { startDate } = req.params
 
       startDate = stringToDate(startDate)
-      const result = await getInbodyInfoByDate(trainerId, traineeId, startDate)
+      const result = await inbodyService.getInbodyInfoByDate(
+        trainerId,
+        traineeId,
+        startDate
+      )
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
@@ -53,7 +57,7 @@ export default {
     try {
       const trainerId = req.user._id
       const { traineeId } = req.params
-      const result = await getLatestInbody(trainerId, traineeId)
+      const result = await inbodyService.getLatestInbody(trainerId, traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
@@ -65,7 +69,7 @@ export default {
   getInbodyDate: async (req, res) => {
     try {
       const { traineeId } = req.params
-      const result = await getInbodyDate(traineeId)
+      const result = await inbodyService.getInbodyDate(traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (err) {
@@ -90,7 +94,11 @@ export default {
 
       const trainerId = req.user._id
       const { traineeId } = req.body
-      const result = await insertInbody(trainerId, traineeId, req.body)
+      const result = await inbodyService.insertInbody(
+        trainerId,
+        traineeId,
+        req.body
+      )
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_CREATE_INBODY, result)
     } catch (err) {
@@ -112,7 +120,7 @@ export default {
       */
 
       const _id = req.params.inbodyId
-      const result = await updateInbody(_id, req.body)
+      const result = await inbodyService.updateInbody(_id, req.body)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_UPDATE_INBODY, result)
     } catch (err) {
@@ -132,7 +140,7 @@ export default {
       */
 
       const _id = req.params.inbodyId
-      const result = await deleteInbody(_id)
+      const result = await inbodyService.deleteInbody(_id)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_INBODY, result)
     } catch (err) {
