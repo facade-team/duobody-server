@@ -3,9 +3,6 @@ import check from './test/check'
 import authRouter from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import traineeRouter from './trainee'
-import inbodyRouter from './inbody'
-import sessionRouter from './session'
-import setRouter from './set'
 
 const router = express.Router()
 
@@ -24,15 +21,6 @@ router.use('/test', check)
 
 // /api/trainee
 router.use('/trainee', traineeRouter)
-
-// /api/inbody
-router.use('/inbody', inbodyRouter)
-
-// /api/session
-router.use('/session', sessionRouter)
-
-// /api/set
-router.use('/set', setRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
