@@ -69,7 +69,6 @@ export default {
   getInbodyDate: async (req, res) => {
     try {
       const { traineeId } = req.params
-
       const result = await inbodyService.getInbodyDate(traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
