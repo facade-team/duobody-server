@@ -85,9 +85,13 @@ export default {
       throw new Error(error)
     }
   },
-  deleteTrainne: async (traineeId) => {
+  deleteTrainne: async (trainerId, traineeId) => {
     try {
-      await Trainee.findByIdAndDelete(mongoose.Types.ObjectId(traineeId))
+      const trainee = await Trainee.findByIdAndDelete(
+        mongoose.Types.ObjectId(traineeId)
+      )
+      // TODO : trainer 에 있는 trainee ID 도 삭제해줘야함
+      const trainer = Trainer.findById(trainerId)
     } catch (error) {
       throw new Error(error)
     }

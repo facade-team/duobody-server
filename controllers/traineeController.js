@@ -143,7 +143,7 @@ export default {
       if (trainerId !== realTrainerId.toString()) {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
       }
-      await traineeService.deleteTrainne(traineeId)
+      await traineeService.deleteTrainne(trainerId, traineeId)
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_TRAINEE)
     } catch (error) {
       console.log(error)
