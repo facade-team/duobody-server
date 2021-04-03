@@ -10,7 +10,7 @@ const sessionSchema = new Schema({
   traineeId: {
     type: ObjectId,
     required: true
-  }
+  },
 
   //부위
   part: {
@@ -23,6 +23,11 @@ const sessionSchema = new Schema({
     type: String,
     required: true,
   },
+
+  date: {
+    type: Date,
+    required: true,
+  }
 
   //세트 참조 배열
   sets: [

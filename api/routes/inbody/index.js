@@ -29,7 +29,7 @@ router.get(
 
 router.post('/', Authenticate, inbodyController.insertInbody)
 
-router.patch('/:inbodyId', Authenticate, inbodyController.updateInbody)
+router.put('/:inbodyId', Authenticate, inbodyController.updateInbody)
 
 router.delete('/:inbodyId', Authenticate, inbodyController.deleteInbody)
 
