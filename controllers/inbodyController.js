@@ -8,7 +8,7 @@ const { CODE, MSG } = config
 export default {
   getInbodyInfoByDateTerm: async (req, res) => {
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
       let { startDate, endDate } = req.params
 
@@ -31,7 +31,7 @@ export default {
 
   getInbodyInfoByDate: async (req, res) => {
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
       let { startDate } = req.params
 
@@ -55,7 +55,7 @@ export default {
     가장 최근의 인바디 정보를 가져오는 라우터
     */
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
       const result = await inbodyService.getLatestInbody(trainerId, traineeId)
 
@@ -79,28 +79,26 @@ export default {
   },
 
   insertInbody: async (req, res) => {
-    try {
-      /*
-        POST /api/inbody/
-        body: {
-          traineeId(hidden)
-          weight,
-          bmi,
-          fat,
-          skeletalMuscle,
-          date
-        }
-      */
+    if (!req.body.date || !req.body.traineeId) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+    }
 
-      const trainerId = req.user._id
+    try {
+      const trainerId = req.decoded._id
       const { traineeId } = req.body
+
       const result = await inbodyService.insertInbody(
         trainerId,
         traineeId,
         req.body
       )
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_CREATE_INBODY, result)
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_CREATE_INBODY,
+        result
+      )
     } catch (err) {
       console.error(err)
       return resUtil.fail(
@@ -112,6 +110,10 @@ export default {
   },
 
   updateInbody: async (req, res) => {
+    if (!req.body.date || !req.body.traineeId) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+    }
+
     try {
       /*
         PATCH /api/inbody/:inbodyId
@@ -119,10 +121,11 @@ export default {
         }
       */
 
-      const _id = req.params.inbodyId
-      const result = await inbodyService.updateInbody(_id, req.body)
+      const result = await inbodyService.updateInbody(req.body)
+      resUtil.success(res, CODE.CREATED, MSG.SUCCESS_UPDATE_INBODY, result)
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_UPDATE_INBODY, result)
+      // console.log(result)
+      return result
     } catch (err) {
       console.error(err)
       return resUtil.fail(

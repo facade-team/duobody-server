@@ -9,7 +9,7 @@ const sessionSchema = new Schema({
   //trainee 참조
   traineeId: {
     type: ObjectId,
-    required: true
+    required: true,
   },
 
   //부위
@@ -27,7 +27,7 @@ const sessionSchema = new Schema({
   date: {
     type: Date,
     required: true,
-  }
+  },
 
   //세트 참조 배열
   sets: [

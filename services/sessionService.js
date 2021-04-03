@@ -1,7 +1,7 @@
 import session from '../models/session'
 
 export default {
-  getSessionByDate: async (traineeId, date) {
+  getSessionByDate: async (traineeId, date) => {
     try {
       const endDate = new Date(date)
       endDate.setDate(endDate.getDate() + 1)
@@ -14,7 +14,15 @@ export default {
         .gte(date)
         .where('date')
         .lt(endDate)
-      //// TODO: 여기서부터!
+
+      return sessionInfo
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  insertSesssion: async (traineeId, date) => {
+    try {
     } catch (error) {
       throw new Error(error)
     }
