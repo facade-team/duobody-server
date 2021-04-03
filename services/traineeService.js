@@ -39,9 +39,9 @@ export default {
       throw new Error(error)
     }
   },
-  readAllTrainees: async () => {
+  readMyTrainees: async (trainerId) => {
     try {
-      const traineeList = await Trainee.find({})
+      const traineeList = await Trainee.find({ trainerId })
       return traineeList
     } catch (error) {
       throw new Error(error)
@@ -55,7 +55,6 @@ export default {
       throw new Error(error)
     }
   },
-  // TODO: update 할 때, DB 에 존재하는 값이 있는지 중복확인해야함
   updateTrainee: async (traineeId, name, phoneNumber, address, age, height) => {
     try {
       const trainee = await Trainee.findByIdAndUpdate(

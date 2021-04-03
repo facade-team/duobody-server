@@ -33,6 +33,7 @@ export default {
     EXIST_TRAINEE: '이미 존재하는 Trainee입니다',
     NOT_EXIST_TRAINEE: '존재하지 않는 Trainee입니다.',
     WRONG_TRAINEE_ID: '잘못된 Trainee ID 입니다.',
+    EXIST_PHONENUMBER: '이미 존재하는 휴대폰 번호입니다.',
     SUCCESS_CREATE_TRAINEE: 'Trainee 생성에 성공하였습니다',
     SUCCESS_READ_TRAINEE: 'Trainee 조회에 성공하였습니다',
     SUCCESS_UPDATE_TRAINEE: 'Trainee 수정에 성공하였습니다',

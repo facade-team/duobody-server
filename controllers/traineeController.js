@@ -44,11 +44,11 @@ export default {
       )
     }
   },
-  readAllTrainees: async (req, res) => {
+  readMyTrainees: async (req, res) => {
     const trainerId = req.decoded._id
     // DB에서 모든 trainee 불러옴
     try {
-      const traineeList = await traineeService.readAllTrainees()
+      const traineeList = await traineeService.readMyTrainees(trainerId)
       return resUtil.success(
         res,
         CODE.OK,
@@ -86,6 +86,12 @@ export default {
     }
     try {
       // 자신의 trainee 인지 확인
+
+      // phoneNumber 중복 확인
+      const isExist = await traineeService.checkTrainee(phoneNumber)
+      if (isExist) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.EXIST_PHONENUMBER)
+      }
 
       // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
       const realTrainerId = await traineeService.getMyTrainerId(traineeId)

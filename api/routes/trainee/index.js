@@ -9,7 +9,7 @@ import isAuth from '../../../middlewares/verifyToken'
 const router = express.Router()
 
 // /api/trainee
-router.get('/', isAuth, traineeController.readAllTrainees)
+router.get('/', isAuth, traineeController.readMyTrainees)
 router.get('/:traineeId', isAuth, traineeController.readOneTrainee)
 router.post('/', isAuth, traineeController.createTrainee)
 router.put('/', isAuth, traineeController.updateTrainee)
