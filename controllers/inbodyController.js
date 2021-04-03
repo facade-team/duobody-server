@@ -1,7 +1,7 @@
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import inbodyService from '../services/inbodyService'
-import stringToDate from '../services/utils/date'
+import stringToDate from '../utils/date'
 
 const { CODE, MSG } = config
 

@@ -51,6 +51,7 @@ const trainerSchema = new Schema({
   ],
 })
 
+/*
 trainerSchema.statics.findOneByUserId = function (trainerId) {
   return this.findOne({
     trainerId,
@@ -68,7 +69,9 @@ trainerSchema.statics.findOneByUserIdAndUpdate = function (trainerId, secret) {
     console.log(err)
   }
 }
+*/
 
+/*
 // 기존 몽구스 모델함수를 오버라이딩 하는 것은 안좋아보임
 trainerSchema.statics.create = function (name, password, trainerId, secret) {
   const encrypted = crypto
@@ -94,5 +97,6 @@ trainerSchema.methods.verify = function (password) {
 
   return this.password === encrypted
 }
+*/
 
 export default mongoose.model('Trainer', trainerSchema)
