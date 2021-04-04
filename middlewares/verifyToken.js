@@ -24,6 +24,7 @@ const verifyTokenMiddleware = (req, res, next) => {
     // req.decoded에 토큰을 decode한 내용을 저장해 넘겨준다.
     // req.decoded 내부에는 trainerid, _id, expiresIn 등 토큰에 대한 정보다 담겨있다.
     req.decoded = decoded
+    // console.log('req.decoded', req.decoded)
     next()
   })
 }

@@ -1,6 +1,8 @@
-import { Error } from 'mongoose'
+import mongoose from 'mongoose'
 import Trainee from '../models/trainee'
 import Trainer from '../models/trainer'
+
+const { Error } = mongoose
 
 export default {
   checkTrainee: async (phoneNumber) => {
@@ -37,9 +39,9 @@ export default {
       throw new Error(error)
     }
   },
-  readAllTrainees: async () => {
+  readMyTrainees: async (trainerId) => {
     try {
-      const traineeList = await Trainee.find({})
+      const traineeList = await Trainee.find({ trainerId })
       return traineeList
     } catch (error) {
       throw new Error(error)
@@ -73,16 +75,31 @@ export default {
   },
   getMyTrainerId: async (traineeId) => {
     try {
-      const trainee = await Trainee.findById(traineeId)
+      const trainee = await Trainee.findById(mongoose.Types.ObjectId(traineeId))
+      if (!trainee) {
+        return
+      }
       const { trainerId } = trainee
       return trainerId
     } catch (error) {
       throw new Error(error)
     }
   },
-  deleteTrainne: async (traineeId) => {
+  deleteTrainne: async (trainerId, traineeId) => {
+    // parameter 로 넘어오는 trainerId, traineeId 둘 다 string 이여서 ObjectId 타입으로 변환해줘야한다.
     try {
-      await Trainee.findOneAndDelete(traineeId)
+      const trainee = await Trainee.findByIdAndDelete(
+        mongoose.Types.ObjectId(traineeId)
+      )
+      // TODO : trainer 에 있는 trainee ID 도 삭제해줘야함
+      const trainer = await Trainer.findById(mongoose.Types.ObjectId(trainerId))
+      const traineeList = trainer.traineeIds
+      const idx = traineeList.indexOf(mongoose.Types.ObjectId(traineeId))
+      // 해당 idx 값이 없으면 바로 리턴으로 끝냄
+      if (idx === -1) return
+      traineeList.splice(idx, 1) // traineeList 에서 해당 traineeID 의 index 를 제거
+      await trainer.save()
+      return trainee
     } catch (error) {
       throw new Error(error)
     }

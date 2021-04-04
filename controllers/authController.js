@@ -99,5 +99,26 @@ export default {
         MSG.FAIL_CREATE_TRAINER
       )
     }
+
+    Trainer.findOne({ trainerId })
+      .then(checkIfExists)
+      .then(verifyPassword)
+      .then(passValues)
+      .then((token) => {
+        console.log('token', token)
+        // console.log(newTrainer)
+        res.json({
+          success: true,
+          statusCode: CODE.CREATED,
+          msg: MSG.SUCCESS_LOGIN,
+          data: newTrainer.id,
+          token,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_LOGIN)
+      })
+
   },
 }

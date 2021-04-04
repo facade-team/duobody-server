@@ -6,7 +6,9 @@ const { CODE, MSG } = config
 
 export default {
   createTrainee: async (req, res) => {
-    const trainerId = req.decoded._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+
+    const trainerId = req.decoded._id
+
     const { name, phoneNumber, address, age, height } = req.body
     // 모든 값이 null 이 아닌지 확인 -> 하나라도 null 이면 안 됨
     if (!name || !phoneNumber || !address || !age || !height) {
@@ -33,7 +35,7 @@ export default {
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_TRAINEE,
-        newTrainee.id
+        newTrainee
       )
     } catch (error) {
       console.log(error)
@@ -44,10 +46,12 @@ export default {
       )
     }
   },
-  readAllTrainees: async (req, res) => {
+
+  readMyTrainees: async (req, res) => {
+    const trainerId = req.decoded._id
     // DB에서 모든 trainee 불러옴
     try {
-      const traineeList = await traineeService.readAllTrainees()
+      const traineeList = await traineeService.readMyTrainees(trainerId)
       return resUtil.success(
         res,
         CODE.OK,
@@ -77,20 +81,29 @@ export default {
   },
   // request : name, phoneNumber, address, age, height, traineeId
   updateTrainee: async (req, res) => {
-    const trainerId = req.decoded._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+    const trainerId = req.decoded._id
     // form 데이터 값 받아오고 에러핸들링
     const { name, phoneNumber, address, age, height, traineeId } = req.body
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
-    // 자신의 trainee 인지 확인
-    // console.log('1', typeof trainerId) // string
-    // console.log('2', typeof (await traineeService.getMyTrainerId(traineeId))) // object
     try {
-      if (
-        trainerId !==
-        (await traineeService.getMyTrainerId(traineeId)).toString()
-      ) {
+      // 자신의 trainee 인지 확인
+
+      // phoneNumber 중복 확인
+      const isExist = await traineeService.checkTrainee(phoneNumber)
+      if (isExist) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.EXIST_PHONENUMBER)
+      }
+
+      // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
+      const realTrainerId = await traineeService.getMyTrainerId(traineeId)
+      // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것
+      if (!realTrainerId) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+      }
+      // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
+      if (trainerId !== realTrainerId.toString()) {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
       }
       const trainee = await traineeService.updateTrainee(
@@ -117,19 +130,31 @@ export default {
     }
   },
   deleteTrainee: async (req, res) => {
-    const trainerId = req.decoded._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
-    const { traineeId } = req.params
+    const trainerId = req.decoded._id
+    const { traineeId } = req.body
 
     try {
-      // 자신의 trainee 가 맞는지 확인
-      if (
-        trainerId !==
-        (await traineeService.getMyTrainerId(traineeId)).toString()
-      ) {
+      // 자신의 trainee 인지 확인
+      // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
+      const realTrainerId = await traineeService.getMyTrainerId(traineeId)
+      // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것
+      if (!realTrainerId) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+      }
+      // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
+      if (trainerId !== realTrainerId.toString()) {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
       }
-      await traineeService.deleteTrainne(traineeId)
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_TRAINEE)
+      const deletedTrainee = await traineeService.deleteTrainne(
+        trainerId,
+        traineeId
+      )
+      return resUtil.success(
+        res,
+        CODE.OK,
+        MSG.SUCCESS_DELETE_TRAINEE,
+        deletedTrainee
+      )
     } catch (error) {
       console.log(error)
       return resUtil.fail(
