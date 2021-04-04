@@ -143,8 +143,16 @@ export default {
       if (trainerId !== realTrainerId.toString()) {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
       }
-      await traineeService.deleteTrainne(trainerId, traineeId)
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_TRAINEE)
+      const deletedTrainee = await traineeService.deleteTrainne(
+        trainerId,
+        traineeId
+      )
+      return resUtil.success(
+        res,
+        CODE.OK,
+        MSG.SUCCESS_DELETE_TRAINEE,
+        deletedTrainee
+      )
     } catch (error) {
       console.log(error)
       return resUtil.fail(

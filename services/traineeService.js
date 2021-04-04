@@ -86,12 +86,20 @@ export default {
     }
   },
   deleteTrainne: async (trainerId, traineeId) => {
+    // parameter 로 넘어오는 trainerId, traineeId 둘 다 string 이여서 ObjectId 타입으로 변환해줘야한다.
     try {
       const trainee = await Trainee.findByIdAndDelete(
         mongoose.Types.ObjectId(traineeId)
       )
       // TODO : trainer 에 있는 trainee ID 도 삭제해줘야함
-      const trainer = Trainer.findById(trainerId)
+      const trainer = await Trainer.findById(mongoose.Types.ObjectId(trainerId))
+      const traineeList = trainer.traineeIds
+      const idx = traineeList.indexOf(mongoose.Types.ObjectId(traineeId))
+      // 해당 idx 값이 없으면 바로 리턴으로 끝냄
+      if (idx === -1) return
+      traineeList.splice(idx, 1) // traineeList 에서 해당 traineeID 의 index 를 제거
+      await trainer.save()
+      return trainee
     } catch (error) {
       throw new Error(error)
     }
