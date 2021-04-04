@@ -9,8 +9,8 @@ const sessionSchema = new Schema({
   //trainee 참조
   traineeId: {
     type: ObjectId,
-    required: true
-  }
+    required: true,
+  },
 
   //부위
   part: {
@@ -21,6 +21,11 @@ const sessionSchema = new Schema({
   //운동종류
   field: {
     type: String,
+    required: true,
+  },
+
+  date: {
+    type: Date,
     required: true,
   },
 

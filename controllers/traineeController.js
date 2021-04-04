@@ -6,7 +6,9 @@ const { CODE, MSG } = config
 
 export default {
   createTrainee: async (req, res) => {
+
     const trainerId = req.decoded._id
+
     const { name, phoneNumber, address, age, height } = req.body
     // 모든 값이 null 이 아닌지 확인 -> 하나라도 null 이면 안 됨
     if (!name || !phoneNumber || !address || !age || !height) {
@@ -44,6 +46,7 @@ export default {
       )
     }
   },
+
   readMyTrainees: async (req, res) => {
     const trainerId = req.decoded._id
     // DB에서 모든 trainee 불러옴
@@ -132,7 +135,6 @@ export default {
 
     try {
       // 자신의 trainee 인지 확인
-
       // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
       const realTrainerId = await traineeService.getMyTrainerId(traineeId)
       // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것

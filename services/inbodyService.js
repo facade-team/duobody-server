@@ -41,23 +41,24 @@ export default {
       })
 
       return result
-    } catch (err) {
+    } catch (error) {
       throw new Error(error)
     }
   },
 
-  updateInbody: async (_id, inbodyInfo) => {
+  updateInbody: async (inbodyInfo) => {
     try {
-      const { weight, bmi, fat, skeletalMuscle, date } = inbodyInfo
+      const { inbodyId, weight, bmi, fat, skeletalMuscle, date } = inbodyInfo
 
       const result = await inbody.findByIdAndUpdate(
-        _id,
+        inbodyId,
         { $set: { weight, bmi, fat, skeletalMuscle, date } },
         { new: true }
       )
+      console.log(result)
 
       return result
-    } catch (err) {
+    } catch (error) {
       throw new Error(error)
     }
   },
@@ -67,7 +68,7 @@ export default {
       const result = await inbody.findByIdAndDelete(_id)
 
       return result
-    } catch (err) {
+    } catch (error) {
       throw new Error(error)
     }
   },
@@ -82,7 +83,7 @@ export default {
         .select('date')
 
       return date
-    } catch (err) {
+    } catch (error) {
       throw new Error(error)
     }
   },
@@ -115,7 +116,7 @@ export default {
         .sort('date')
 
       return result
-    } catch (err) {
+    } catch (error) {
       throw new Error(error)
     }
   },
