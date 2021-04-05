@@ -149,7 +149,7 @@ export default {
       }
       // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
       if (trainerId !== realTrainerId.toString()) {
-        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
       }
       const deletedTrainee = await traineeService.deleteTrainne(
         trainerId,
