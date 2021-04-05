@@ -1,6 +1,16 @@
 import session from '../models/session'
 
 export default {
+  findById: async (sessionId) => {
+    try {
+      const result = await session.findById(sessionId)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
   getSessionByDate: async (traineeId, date) => {
     try {
       const endDate = new Date(date)
@@ -21,8 +31,58 @@ export default {
     }
   },
 
-  insertSesssion: async (traineeId, date) => {
+  insertSesssion: async (_id, lessonId, sessionInfo) => {
     try {
+      const { part, field } = sessionInfo
+      const result = await session.create({
+        _id,
+        lessonId,
+        part,
+        field,
+      })
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  pushSet: async (sessionId, setId) => {
+    try {
+      const result = await session.findByIdAndUpdate(
+        sessionId,
+        {
+          $push: {
+            sets: setId,
+          },
+        },
+        { new: true }
+      )
+      console.log(result)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  deleteSession: async (sessionId) => {
+    try {
+      const result = await session.findByIdAndDelete(sessionId)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  deleteSessionByLessionId: async (lessonId) => {
+    try {
+      const result = await session.remove({
+        lessonId,
+      })
+
+      return result
     } catch (error) {
       throw new Error(error)
     }

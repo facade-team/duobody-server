@@ -28,6 +28,7 @@ export default {
     NULL_VALUE: '필수입력 정보가 없습니다.',
     OUT_OF_VALUE: '파라미터 값이 잘못되었습니다.',
     INVALID_PARAMETER_TYPE: '파라미터 타입이 잘못되었습니다.',
+    DB_ERROR: 'DB Error',
 
     // Trainee
     EXIST_TRAINEE: '이미 존재하는 유저입니다',
@@ -60,6 +61,14 @@ export default {
     FAIL_READ_INBODY: 'Inbody 조회에 실패하였습니다',
     FAIL_UPDATE_INBODY: 'Inbody 수정에 실패하였습니다',
     FAIL_DELETE_INBODY: 'Inbody 삭제에 실패하였습니다',
+    SUCCESS_READ_LESSON: 'Lesson 조회에 성공하였습니다',
+    SUCCESS_CREATE_LESSON: 'Lesson 생성에 성공하였습니다',
+    SUCCESS_UPDATE_LESSON: 'Lesson 수정에 성공하였습니다',
+    SUCCESS_DELETE_LESSON: 'Lesson 삭제에 성공하였습니다',
+    FAIL_CREATE_LESSON: 'Lesson 생성에 실패하였습니다',
+    FAIL_READ_LESSON: 'Lesson 조회에 실패하였습니다',
+    FAIL_UPDATE_LESSON: 'Lesson 수정에 실패하였습니다',
+    FAIL_DELETE_LESSON: 'Lesson 삭제에 실패하였습니다',
     SUCCESS_READ_SESSION: 'Session 조회에 성공하였습니다',
     SUCCESS_CREATE_SESSION: 'Session 생성에 성공하였습니다',
     SUCCESS_UPDATE_SESSION: 'Session 수정에 성공하였습니다',

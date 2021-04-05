@@ -3,6 +3,7 @@ import express from 'express'
 import traineeController from '../../../controllers/traineeController'
 import isAuth from '../../../middlewares/fakeAuth'
 import inbodyRouter from './inbody'
+import lessonRouter from './lesson'
 import sessionRouter from './session'
 import setRouter from './set'
 
@@ -12,6 +13,8 @@ const router = express.Router()
 
 // /api/trainee/inbody
 router.use('/inbody', inbodyRouter)
+
+router.use('/lesson', lessonRouter)
 
 // /api/trainee/session
 router.use('/session', sessionRouter)
