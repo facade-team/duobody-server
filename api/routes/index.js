@@ -5,6 +5,7 @@ import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import traineeRouter from './trainee'
 import inbodyRouter from './inbody'
 import sessionRouter from './session'
+import messengerRouter from './messenger'
 
 const router = express.Router()
 
@@ -28,6 +29,8 @@ router.use('/trainee', traineeRouter)
 router.use('/inbody', inbodyRouter)
 
 router.use('/session', sessionRouter)
+
+router.use('/messenger', messengerRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
