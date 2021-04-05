@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import traineeService from '../services/traineeService'
@@ -88,9 +89,16 @@ export default {
       // 자신의 trainee 인지 확인
 
       // phoneNumber 중복 확인
-      const isExist = await traineeService.checkTrainee(phoneNumber)
-      if (isExist) {
-        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.EXIST_PHONENUMBER)
+      console.log(traineeId)
+      const trainee = await traineeService.readOneTrainee(
+        mongoose.Types.ObjectId(traineeId)
+      )
+
+      if (trainee.phoneNumber !== phoneNumber) {
+        const isExist = await traineeService.checkTrainee(phoneNumber)
+        if (isExist) {
+          return resUtil.fail(res, CODE.BAD_REQUEST, MSG.EXIST_PHONENUMBER)
+        }
       }
 
       // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
@@ -103,7 +111,7 @@ export default {
       if (trainerId !== realTrainerId.toString()) {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
       }
-      const trainee = await traineeService.updateTrainee(
+      const updatedTrainee = await traineeService.updateTrainee(
         traineeId,
         name,
         phoneNumber,
@@ -115,7 +123,7 @@ export default {
         res,
         CODE.CREATED,
         MSG.SUCCESS_UPDATE_TRAINEE,
-        trainee
+        updatedTrainee
       )
     } catch (error) {
       console.log(error)
