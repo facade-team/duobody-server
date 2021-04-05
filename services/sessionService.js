@@ -31,6 +31,16 @@ export default {
     }
   },
 
+  getSessionById: async (_id) => {
+    try {
+      const result = await session.findById(_id)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
   insertSesssion: async (_id, lessonId, sessionInfo) => {
     try {
       const { part, field } = sessionInfo
@@ -58,7 +68,6 @@ export default {
         },
         { new: true }
       )
-      console.log(result)
 
       return result
     } catch (error) {

@@ -41,6 +41,22 @@ export default {
     }
   },
 
+  getLessonById: async (_id) => {
+    try {
+      const result = await lesson.findById(_id).populate({
+        path: 'sessions',
+        populate: {
+          path: 'sets',
+          options: { sort: { set: 1 } },
+        },
+      })
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
   insertLesson: async (traineeId, start, end) => {
     try {
       const result = await lesson.create({

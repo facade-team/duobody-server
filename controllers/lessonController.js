@@ -40,62 +40,72 @@ export default {
     try {
       const { traineeId, start, end } = req.body
       const sessions = req.body.session
+      const sessionIds = []
 
-      const result = await lessonService.insertLesson(traineeId, start, end)
-      const lessonId = result._id
+      const lesson = await lessonService.insertLesson(traineeId, start, end)
+      const lessonId = lesson._id
 
-      sessions.forEach((sessionObject) => {
-        const sessionId = new mongoose.Types.ObjectId()
-        Promise.all(
-          sessionObject.set.map((setObject) => {
-            return new Promise((resolve) => {
-              const { set, weight, rep } = setObject
-              const setResult = setService.insertSet(
-                sessionId,
-                set,
-                weight,
-                rep
-              )
-
-              resolve(setResult)
-            })
-          })
-        ).then((values) => {
-          // console.log(sessionObject.field, values)
-          const { part, field } = sessionObject
-          console.log(sessionId)
-          sessionService.insertSesssion(sessionId, lessonId, {
-            part,
-            field,
-          })
-          Promise.all(
-            values.map((setObject) => {
+      await Promise.all(
+        sessions.map(async (sessionObject) => {
+          const sessionId = new mongoose.Types.ObjectId()
+          sessionIds.push(sessionId)
+          await Promise.all(
+            sessionObject.set.map((setObject) => {
               return new Promise((resolve) => {
-                if (!sessionService.findById(sessionId)) {
-                  const sessionResult = sessionService.pushSet(
-                    sessionId,
-                    setObject._id
-                  )
-                  resolve(sessionResult)
-                }
+                const { set, weight, rep } = setObject
+                const setResult = setService.insertSet(
+                  sessionId,
+                  set,
+                  weight,
+                  rep
+                )
+
+                resolve(setResult)
               })
             })
-          ).then((v) => {
-            console.log('v:', v)
+          ).then((values) => {
+            const { part, field } = sessionObject
+            return new Promise((resolve) => {
+              const sessionResult = sessionService.insertSesssion(
+                sessionId,
+                lessonId,
+                {
+                  part,
+                  field,
+                }
+              )
+              if (sessionResult) resolve(sessionResult)
+            }).then(async () => {
+              await Promise.all(
+                values.map((setObject) => {
+                  return new Promise((resolve) => {
+                    const sessionResult = sessionService.pushSet(
+                      sessionId,
+                      setObject._id
+                    )
+
+                    if (sessionResult) {
+                      resolve(sessionResult)
+                    }
+                  })
+                })
+              )
+            })
           })
         })
+      ).then(async () => {
+        let promises = sessionIds.map((sessionId) => {
+          return new Promise((resolve) => {
+            const lessonResult = lessonService.pushSession(lessonId, sessionId)
+
+            resolve(lessonResult)
+          })
+        })
+
+        await Promise.all(promises)
       })
 
-      console.log(sessions)
-
-      // const tmp = new mongoose.Types.ObjectId()
-      // const b = await setService.insertSet(tmp, 1, 10, 3)
-
-      // const a = await sessionService.insertSesssion(tmp, lessonId, {
-      //   part: '가슴',
-      //   field: '벤치프레스',
-      // })
-      // const c = await sessionService.pushSet(a._id, b._id)
+      const result = await lessonService.getLessonById(lessonId)
 
       return resUtil.success(
         res,
