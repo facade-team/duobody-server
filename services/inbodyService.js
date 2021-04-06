@@ -55,7 +55,6 @@ export default {
         { $set: { weight, bmi, fat, skeletalMuscle, date } },
         { new: true }
       )
-      console.log(result)
 
       return result
     } catch (error) {

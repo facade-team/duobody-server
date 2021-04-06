@@ -6,13 +6,6 @@ const {
 } = Schema
 
 const lessonSchema = new Schema({
-  // trainer 참조
-  trainerId: {
-    type: ObjectId,
-    required: true,
-    ref: 'Trainer',
-  },
-
   // trainee 참조
   traineeId: {
     type: ObjectId,
@@ -20,8 +13,13 @@ const lessonSchema = new Schema({
     ref: 'Trainee',
   },
 
-  // 날짜
-  date: {
+  // 시작시간
+  start: {
+    type: Date,
+  },
+
+  // 종료시간
+  end: {
     type: Date,
   },
 
@@ -33,16 +31,6 @@ const lessonSchema = new Schema({
       ref: 'Session',
     },
   ],
-
-  // 시작시간
-  start: {
-    type: Date,
-  },
-
-  // 종료시간
-  end: {
-    type: Date,
-  },
 })
 
 export default mongoose.model('Lesson', lessonSchema)

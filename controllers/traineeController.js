@@ -6,7 +6,6 @@ const { CODE, MSG } = config
 
 export default {
   createTrainee: async (req, res) => {
-
     const trainerId = req.decoded._id
 
     const { name, phoneNumber, address, age, height } = req.body
@@ -130,8 +129,8 @@ export default {
     }
   },
   deleteTrainee: async (req, res) => {
-    const trainerId = req.decoded._id
-    const { traineeId } = req.body
+    const trainerId = req.decoded._id // 나중에 token verify 해주는 미들웨어 생기면 그때 수정
+    const { traineeId } = req.params
 
     try {
       // 자신의 trainee 인지 확인

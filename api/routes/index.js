@@ -4,9 +4,6 @@ import authRouter from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import traineeRouter from './trainee'
 
-import inbodyRouter from './trainee/inbody'
-import sessionRouter from './trainee/session'
-
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -24,11 +21,6 @@ router.use('/test', check)
 
 // /api/trainee
 router.use('/trainee', traineeRouter)
-
-// Inbody Info
-router.use('/inbody', inbodyRouter)
-
-router.use('/session', sessionRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
