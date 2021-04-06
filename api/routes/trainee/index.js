@@ -23,7 +23,7 @@ router.use('/session', sessionRouter)
 router.use('/set', setRouter)
 
 // /api/trainee
-router.get('/', isAuth, traineeController.readAllTrainees)
+router.get('/', isAuth, traineeController.readMyTrainees)
 router.get('/:traineeId', isAuth, traineeController.readOneTrainee)
 router.post('/', isAuth, traineeController.createTrainee)
 router.put('/', isAuth, traineeController.updateTrainee)
