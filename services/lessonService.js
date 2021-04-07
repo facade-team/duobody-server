@@ -14,7 +14,7 @@ export default {
     }
   },
 
-  getLessonDsate: async (traineeId, thisMonth, nextMonth) => {
+  getLessonMonthDate: async (traineeId, thisMonth, nextMonth) => {
     try {
       const result = lesson
         .find(
@@ -29,6 +29,17 @@ export default {
         .gte(thisMonth)
         .where('end')
         .lt(nextMonth)
+        .sort('-start')
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  getLessonDate: async (traineeId) => {
+    try {
+      const result = await lesson.find({ traineeId }, { start: 1 })
 
       return result
     } catch (error) {

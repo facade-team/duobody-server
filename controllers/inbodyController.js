@@ -1,6 +1,7 @@
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import inbodyService from '../services/inbodyService'
+import traineeService from '../services/traineeService'
 import { stringToDate } from '../utils/date'
 
 const { CODE, MSG } = config
@@ -14,6 +15,15 @@ export default {
 
       startDate = stringToDate(startDate)
       endDate = stringToDate(endDate)
+      // startDate = new Date(startDate)
+      // startDate.setHours(0)
+      // startDate.setMinutes(0)
+      // startDate.setSeconds(0)
+
+      // endDate = new Date(endDate)
+      // endDate.setHours(0)
+      // endDate.setMinutes(0)
+      // endDate.setSeconds(0)
 
       const result = await inbodyService.getInbodyInfoByDate(
         trainerId,
@@ -33,13 +43,13 @@ export default {
     try {
       const trainerId = req.decoded._id
       const { traineeId } = req.params
-      let { startDate } = req.params
+      let { date } = req.params
 
-      startDate = stringToDate(startDate)
+      date = stringToDate(date)
       const result = await inbodyService.getInbodyInfoByDate(
         trainerId,
         traineeId,
-        startDate
+        date
       )
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
@@ -57,6 +67,11 @@ export default {
     try {
       const trainerId = req.decoded._id
       const { traineeId } = req.params
+
+      if (!(await traineeService.readOneTrainee(traineeId))) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_INBODY)
+      }
+
       const result = await inbodyService.getLatestInbody(trainerId, traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
@@ -79,13 +94,24 @@ export default {
   },
 
   insertInbody: async (req, res) => {
-    if (!req.body.date || !req.body.traineeId) {
+    if (
+      !req.body.date ||
+      !req.body.traineeId ||
+      !req.body.weight ||
+      !req.body.bmi ||
+      !req.body.fat ||
+      !req.body.skeletalMuscle
+    ) {
       return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
 
     try {
       const trainerId = req.decoded._id
       const { traineeId } = req.body
+
+      if (!(await traineeService.readOneTrainee(traineeId))) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_INBODY)
+      }
 
       const result = await inbodyService.insertInbody(
         trainerId,
@@ -110,22 +136,27 @@ export default {
   },
 
   updateInbody: async (req, res) => {
-    if (!req.body.date || !req.body.traineeId) {
+    console.log(req.body)
+    if (
+      !req.body.date ||
+      !req.body.inbodyId ||
+      !req.body.weight ||
+      !req.body.bmi ||
+      !req.body.fat ||
+      !req.body.skeletalMuscle
+    ) {
       return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
 
     try {
-      /*
-        PATCH /api/inbody/:inbodyId
-        body: {
-        }
-      */
-
       const result = await inbodyService.updateInbody(req.body)
-      resUtil.success(res, CODE.CREATED, MSG.SUCCESS_UPDATE_INBODY, result)
 
-      // console.log(result)
-      return result
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_UPDATE_INBODY,
+        result
+      )
     } catch (err) {
       console.error(err)
       return resUtil.fail(

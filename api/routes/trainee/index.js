@@ -5,13 +5,11 @@ import traineeController from '../../../controllers/traineeController'
 import verifyToken from '../../../middlewares/verifyToken'
 import inbodyRouter from './inbody'
 import lessonRouter from './lesson'
-
 const router = express.Router()
 
-// /api/trainee/inbody
-router.use('/inbody', inbodyRouter)
+router.use('/', inbodyRouter)
 
-router.use('/lesson', lessonRouter)
+router.use('/', lessonRouter)
 
 /*---------------------------
   /api/trainee router
