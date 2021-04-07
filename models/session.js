@@ -7,10 +7,11 @@ const {
 
 const sessionSchema = new Schema({
   //trainee 참조
-  traineeId: {
+  lessonId: {
     type: ObjectId,
-    required: true
-  }
+    required: true,
+    ref: 'Lesson',
+  },
 
   //부위
   part: {

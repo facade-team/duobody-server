@@ -7,10 +7,15 @@ const {
 
 const setSchema = new Schema({
   //세션 참조
-  sid: {
+  sessionId: {
     type: ObjectId,
     required: true,
     ref: 'Session',
+  },
+
+  set: {
+    type: Number,
+    required: true,
   },
 
   //무게

@@ -28,6 +28,7 @@ export default {
     NULL_VALUE: '필수입력 정보가 없습니다.',
     OUT_OF_VALUE: '파라미터 값이 잘못되었습니다.',
     INVALID_PARAMETER_TYPE: '파라미터 타입이 잘못되었습니다.',
+    DB_ERROR: 'DB Error',
 
     // Trainee
     EXIST_TRAINEE: '이미 존재하는 Trainee입니다',
@@ -51,6 +52,7 @@ export default {
     NOT_EXIST_TRAINER: '존재하는 Trainer가 아닙니다',
     FAIL_CONFIRM_SECRET: 'Trainer Secret Code 인증에 실패하였습니다',
     WRONG_SECRET: '잘못된 비밀번호를 입력했습니다',
+    WRONG_SECRET_CODE: '잘못된 인증코드를 입력했습니다',
     FAIL_VERIFY: '인증에 실패하였습니다',
     SUCCESS_LOGIN: '로그인에 성공하였습니다',
     FAIL_LOGIN: '로그인에 실패하였습니다',
@@ -66,5 +68,21 @@ export default {
     // Messenger
     SUCCESS_CREATE_CHATROOM: '채팅방 생성에 성공하였습니다.',
     FAIL_CREATE_CHATROOM: '채팅방 생성에 실패하였습니다.',
+    SUCCESS_READ_LESSON: 'Lesson 조회에 성공하였습니다',
+    SUCCESS_CREATE_LESSON: 'Lesson 생성에 성공하였습니다',
+    SUCCESS_UPDATE_LESSON: 'Lesson 수정에 성공하였습니다',
+    SUCCESS_DELETE_LESSON: 'Lesson 삭제에 성공하였습니다',
+    FAIL_CREATE_LESSON: 'Lesson 생성에 실패하였습니다',
+    FAIL_READ_LESSON: 'Lesson 조회에 실패하였습니다',
+    FAIL_UPDATE_LESSON: 'Lesson 수정에 실패하였습니다',
+    FAIL_DELETE_LESSON: 'Lesson 삭제에 실패하였습니다',
+    SUCCESS_READ_SESSION: 'Session 조회에 성공하였습니다',
+    SUCCESS_CREATE_SESSION: 'Session 생성에 성공하였습니다',
+    SUCCESS_UPDATE_SESSION: 'Session 수정에 성공하였습니다',
+    SUCCESS_DELETE_SESSIOn: 'Session 삭제에 성공하였습니다',
+    FAIL_CREATE_SESSION: 'Session 생성에 실패하였습니다',
+    FAIL_READ_SESSION: 'Session 조회에 실패하였습니다',
+    FAIL_UPDATE_SESSION: 'Session 수정에 실패하였습니다',
+    FAIL_DELETE_SESSION: 'Session 삭제에 실패하였습니다',
   },
 }

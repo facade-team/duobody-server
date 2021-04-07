@@ -1,10 +1,9 @@
+/* eslint-disable import/no-named-as-default */
 import express from 'express'
 import check from './test/check'
 import authRouter from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import traineeRouter from './trainee'
-import inbodyRouter from './inbody'
-import sessionRouter from './session'
 import messengerRouter from './messenger'
 
 const router = express.Router()
@@ -24,11 +23,6 @@ router.use('/test', check)
 
 // /api/trainee
 router.use('/trainee', traineeRouter)
-
-// Inbody Info
-router.use('/inbody', inbodyRouter)
-
-router.use('/session', sessionRouter)
 
 router.use('/messenger', messengerRouter)
 

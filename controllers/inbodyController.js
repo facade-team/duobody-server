@@ -8,7 +8,7 @@ const { CODE, MSG } = config
 export default {
   getInbodyInfoByDateTerm: async (req, res) => {
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
       let { startDate, endDate } = req.params
 
@@ -31,12 +31,16 @@ export default {
 
   getInbodyInfoByDate: async (req, res) => {
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
       let { startDate } = req.params
 
       startDate = stringToDate(startDate)
-      const result = await getInbodyInfoByDate(trainerId, traineeId, startDate)
+      const result = await inbodyService.getInbodyInfoByDate(
+        trainerId,
+        traineeId,
+        startDate
+      )
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
@@ -51,9 +55,9 @@ export default {
     가장 최근의 인바디 정보를 가져오는 라우터
     */
     try {
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.params
-      const result = await getLatestInbody(trainerId, traineeId)
+      const result = await inbodyService.getLatestInbody(trainerId, traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
@@ -65,7 +69,7 @@ export default {
   getInbodyDate: async (req, res) => {
     try {
       const { traineeId } = req.params
-      const result = await getInbodyDate(traineeId)
+      const result = await inbodyService.getInbodyDate(traineeId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (err) {
@@ -75,24 +79,26 @@ export default {
   },
 
   insertInbody: async (req, res) => {
+    if (!req.body.date || !req.body.traineeId) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+    }
+
     try {
-      /*
-        POST /api/inbody/
-        body: {
-          traineeId(hidden)
-          weight,
-          bmi,
-          fat,
-          skeletalMuscle,
-          date
-        }
-      */
-
-      const trainerId = req.user._id
+      const trainerId = req.decoded._id
       const { traineeId } = req.body
-      const result = await insertInbody(trainerId, traineeId, req.body)
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_CREATE_INBODY, result)
+      const result = await inbodyService.insertInbody(
+        trainerId,
+        traineeId,
+        req.body
+      )
+
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_CREATE_INBODY,
+        result
+      )
     } catch (err) {
       console.error(err)
       return resUtil.fail(
@@ -104,6 +110,10 @@ export default {
   },
 
   updateInbody: async (req, res) => {
+    if (!req.body.date || !req.body.traineeId) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+    }
+
     try {
       /*
         PATCH /api/inbody/:inbodyId
@@ -111,10 +121,11 @@ export default {
         }
       */
 
-      const _id = req.params.inbodyId
-      const result = await updateInbody(_id, req.body)
+      const result = await inbodyService.updateInbody(req.body)
+      resUtil.success(res, CODE.CREATED, MSG.SUCCESS_UPDATE_INBODY, result)
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_UPDATE_INBODY, result)
+      // console.log(result)
+      return result
     } catch (err) {
       console.error(err)
       return resUtil.fail(
@@ -132,7 +143,7 @@ export default {
       */
 
       const _id = req.params.inbodyId
-      const result = await deleteInbody(_id)
+      const result = await inbodyService.deleteInbody(_id)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_INBODY, result)
     } catch (err) {
