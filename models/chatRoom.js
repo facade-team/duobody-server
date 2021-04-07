@@ -22,4 +22,4 @@ const chatRoomSchema = new Schema({
   ],
 })
 
-export default mongoose.model('Chatroom', chatRoomSchema)
+export default mongoose.model('ChatRoom', chatRoomSchema)
