@@ -14,6 +14,28 @@ export default {
     }
   },
 
+  getLessonDate: async (traineeId, thisMonth, nextMonth) => {
+    try {
+      const result = lesson
+        .find(
+          {
+            traineeId,
+          },
+          {
+            start: 1,
+          }
+        )
+        .where('start')
+        .gte(thisMonth)
+        .where('end')
+        .lt(nextMonth)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
   getLessonByDate: async (traineeId, date) => {
     try {
       const endDate = new Date(date)

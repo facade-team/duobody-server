@@ -3,12 +3,39 @@ import resUtil from '../utils/resUtil'
 import lessonService from '../services/lessonService'
 import sessionService from '../services/sessionService'
 import setService from '../services/setService'
-import stringToDate from '../utils/date'
+import { stringToDate, monthToDate, getDate } from '../utils/date'
 import mongoose from 'mongoose'
 
 const { CODE, MSG } = config
 
 export default {
+  getLessonDate: async (req, res) => {
+    try {
+      const { traineeId, month } = req.params
+
+      const thisMonth = monthToDate(month)
+      const nextMonth = monthToDate(month + 1)
+
+      let lessonDate = await lessonService.getLessonDate(
+        traineeId,
+        thisMonth,
+        nextMonth
+      )
+      const result = []
+
+      lessonDate.forEach((object) => {
+        result.push({ _id: object._id, date: getDate(object.start) })
+      })
+
+      console.log(result)
+
+      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+    }
+  },
+
   getLessonByDate: async (req, res) => {
     if (!req.params.traineeId || !req.params.date) {
       return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
@@ -28,6 +55,24 @@ export default {
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
+      console.log(error)
+      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+    }
+  },
+
+  getLessonById: async (req, res) => {
+    if (!req.params.lessonId) {
+      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
+    }
+
+    try {
+      const { lessonId } = req.params
+
+      const result = await lessonService.getLessonById(lessonId)
+
+      return resUtil(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+    } catch (error) {
+      console.log(error)
       return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
     }
   },
