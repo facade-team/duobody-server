@@ -61,6 +61,11 @@ const traineeSchema = new Schema({
   purpose: {
     type: String,
   },
+
+  chatRoomId: {
+    type: ObjectId,
+    ref: 'ChatRoom',
+  },
 })
 
 export default mongoose.model('Trainee', traineeSchema)

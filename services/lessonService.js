@@ -14,7 +14,7 @@ export default {
     }
   },
 
-  getLessonDate: async (traineeId, thisMonth, nextMonth) => {
+  getLessonDsate: async (traineeId, thisMonth, nextMonth) => {
     try {
       const result = lesson
         .find(

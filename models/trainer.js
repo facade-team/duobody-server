@@ -49,6 +49,13 @@ const trainerSchema = new Schema({
       ref: 'Trainee',
     },
   ],
+
+  chatRoomIds: [
+    {
+      type: ObjectId,
+      ref: 'ChatRoom',
+    },
+  ],
 })
 
 /*

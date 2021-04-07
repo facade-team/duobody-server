@@ -91,7 +91,6 @@ export default {
       const trainee = await Trainee.findByIdAndDelete(
         mongoose.Types.ObjectId(traineeId)
       )
-      // TODO : trainer 에 있는 trainee ID 도 삭제해줘야함
       const trainer = await Trainer.findById(mongoose.Types.ObjectId(trainerId))
       const traineeList = trainer.traineeIds
       const idx = traineeList.indexOf(mongoose.Types.ObjectId(traineeId))
