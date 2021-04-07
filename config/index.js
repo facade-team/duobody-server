@@ -64,6 +64,10 @@ export default {
     FAIL_READ_INBODY: 'Inbody 조회에 실패하였습니다',
     FAIL_UPDATE_INBODY: 'Inbody 수정에 실패하였습니다',
     FAIL_DELETE_INBODY: 'Inbody 삭제에 실패하였습니다',
+
+    // Messenger
+    SUCCESS_CREATE_CHATROOM: '채팅방 생성에 성공하였습니다.',
+    FAIL_CREATE_CHATROOM: '채팅방 생성에 실패하였습니다.',
     SUCCESS_READ_LESSON: 'Lesson 조회에 성공하였습니다',
     SUCCESS_CREATE_LESSON: 'Lesson 생성에 성공하였습니다',
     SUCCESS_UPDATE_LESSON: 'Lesson 수정에 성공하였습니다',

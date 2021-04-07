@@ -1,11 +1,10 @@
+/* eslint-disable import/no-named-as-default-member */
 /* eslint-disable import/no-named-as-default */
 import express from 'express'
 import traineeController from '../../../controllers/traineeController'
-import isAuth from '../../../middlewares/fakeAuth'
+import verifyToken from '../../../middlewares/verifyToken'
 import inbodyRouter from './inbody'
 import lessonRouter from './lesson'
-
-// /api/trainee router
 
 const router = express.Router()
 
@@ -14,10 +13,13 @@ router.use('/inbody', inbodyRouter)
 
 router.use('/lesson', lessonRouter)
 
-// /api/trainee
-router.get('/', isAuth, traineeController.readMyTrainees)
-router.get('/:traineeId', isAuth, traineeController.readOneTrainee)
-router.post('/', isAuth, traineeController.createTrainee)
-router.put('/', isAuth, traineeController.updateTrainee)
-router.delete('/:traineeId', isAuth, traineeController.deleteTrainee)
+/*---------------------------
+  /api/trainee router
+--------------------------- */
+router.get('/', verifyToken, traineeController.readMyTrainees)
+router.get('/:traineeId', verifyToken, traineeController.readOneTrainee)
+router.post('/', verifyToken, traineeController.createTrainee)
+router.put('/', verifyToken, traineeController.updateTrainee)
+router.delete('/', verifyToken, traineeController.deleteTrainee)
+
 export default router

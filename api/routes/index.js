@@ -1,8 +1,10 @@
+/* eslint-disable import/no-named-as-default */
 import express from 'express'
 import check from './test/check'
 import authRouter from './auth'
 import verifyTokenMiddleware from '../../middlewares/verifyToken'
 import traineeRouter from './trainee'
+import messengerRouter from './messenger'
 
 const router = express.Router()
 
@@ -21,6 +23,8 @@ router.use('/test', check)
 
 // /api/trainee
 router.use('/trainee', traineeRouter)
+
+router.use('/messenger', messengerRouter)
 
 router.use((err, req, res, next) => {
   console.log(err.stack)
