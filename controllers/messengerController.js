@@ -37,7 +37,28 @@ export default {
       )
     }
   },
-  getAllChatRooms: async (req, res) => {},
-  getChatRoom: async (req, res) => {},
+  // 트레이너의 모든 채팅방 조회
+  getAllChatRooms: async (req, res) => {
+    try {
+      const trainerId = req.decoded._id
+      // trainer _id 로 chat room 리스트 불러오기
+      const chatRoomList = await messengerService.getChatRoomList(trainerId)
+
+      return resUtil.success(
+        res,
+        CODE.OK,
+        MSG.SUCCESS_READ_ALL_CHATROOMS,
+        chatRoomList
+      )
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_ALL_CHATROOMS
+      )
+    }
+  },
+  enterChatRoom: async (req, res) => {},
   sendMessage: async (req, res) => {},
 }

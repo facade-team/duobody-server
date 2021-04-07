@@ -47,4 +47,22 @@ export default {
       throw new Error(error)
     }
   },
+  getChatRoomList: async (trainerId) => {
+    try {
+      const chatRoomList = await Trainer.findById(trainerId, {
+        chatRoomIds: 1,
+        _id: 0,
+      }).populate({
+        path: 'chatRoomIds',
+        populate: { path: 'trainerId traineeId', select: 'name' },
+      })
+
+      // console.log(chatRoomList)
+      // TODO: 나중에 가장 마지막 message 도 populate 해줘야함
+
+      return chatRoomList
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
