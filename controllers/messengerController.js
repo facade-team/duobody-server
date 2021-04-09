@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+/* eslint-disable no-underscore-dangle */
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import messengerService from '../services/messengerService'
@@ -59,6 +59,49 @@ export default {
       )
     }
   },
-  enterChatRoom: async (req, res) => {},
-  sendMessage: async (req, res) => {},
+  getChatRoomInfo: async (req, res) => {
+    try {
+      const { chatRoomId } = req.params
+      const chatRoomInfo = await messengerService.getChatRoomInfo(chatRoomId)
+      return resUtil.success(
+        res,
+        CODE.OK,
+        MSG.SUCCESS_READ_CHATROOMINFO,
+        chatRoomInfo
+      )
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_CHATROOMINFO
+      )
+    }
+  },
+  // 일단은 trainer 만 message 를 보낼 수 있음
+  sendMessage: async (req, res) => {
+    try {
+      const trainerId = req.decoded._id
+      const { chatRoomId } = req.params
+      const { content } = req.body
+      const result = await messengerService.sendMessage(
+        chatRoomId,
+        trainerId,
+        content
+      )
+      return resUtil.success(
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_SEND_MESSAGE,
+        result
+      )
+    } catch (error) {
+      console.log(error)
+      return resUtil.fail(
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_SEND_MESSAGE
+      )
+    }
+  },
 }

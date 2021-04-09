@@ -19,7 +19,7 @@ const messageSchema = new Schema({
   },
 
   // 채팅룸 참조
-  chatRommId: {
+  chatRoomId: {
     type: ObjectId,
     required: true,
     ref: 'Chatroom',

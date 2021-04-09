@@ -65,4 +65,39 @@ export default {
       throw new Error(error)
     }
   },
+  getChatRoomInfo: async (chatRoomId) => {
+    try {
+      chatRoomId = mongoose.Types.ObjectId(chatRoomId)
+      // TODO: 나중에 메시지 전체 populate
+      const chatRoomInfo = await ChatRoom.findById(chatRoomId).populate({
+        path: 'trainerId traineeId',
+        select: 'name',
+      })
+      return chatRoomInfo
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  sendMessage: async (chatRoomId, trainerId, content) => {
+    try {
+      chatRoomId = mongoose.Types.ObjectId(chatRoomId)
+      // trainer 가 속한 chatRoom 이 맞는지 검사
+      const chatRoom = await ChatRoom.findOne({ _id: chatRoomId, trainerId })
+      // trainer 가 속한 chatRoom 이 아니면 에러 throw
+      if (!chatRoom) throw new Error()
+      // console.log(chatRoom)
+      // TODO: 날짜 형식 아직 안맞췄음
+      const message = await Message.create({
+        from: chatRoom.trainerId,
+        to: chatRoom.traineeId,
+        chatRoomId: chatRoom._id,
+        content,
+      })
+      chatRoom.messages.push(message._id)
+      await chatRoom.save()
+      return message
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
