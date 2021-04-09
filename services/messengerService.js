@@ -57,7 +57,7 @@ export default {
         populate: { path: 'trainerId traineeId', select: 'name' },
       })
 
-      // console.log(chatRoomList)
+      console.log(chatRoomList)
       // TODO: 나중에 가장 마지막 message 도 populate 해줘야함
 
       return chatRoomList
@@ -68,10 +68,9 @@ export default {
   getChatRoomInfo: async (chatRoomId) => {
     try {
       chatRoomId = mongoose.Types.ObjectId(chatRoomId)
-      // TODO: 나중에 메시지 전체 populate
       const chatRoomInfo = await ChatRoom.findById(chatRoomId).populate({
-        path: 'trainerId traineeId',
-        select: 'name',
+        path: 'trainerId traineeId messages',
+        select: 'name createdAt content',
       })
       return chatRoomInfo
     } catch (error) {
