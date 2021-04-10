@@ -57,9 +57,6 @@ export default {
         populate: { path: 'trainerId traineeId', select: 'name' },
       })
 
-      console.log(chatRoomList)
-      // TODO: 나중에 가장 마지막 message 도 populate 해줘야함
-
       return chatRoomList
     } catch (error) {
       throw new Error(error)
@@ -92,7 +89,8 @@ export default {
         chatRoomId: chatRoom._id,
         content,
       })
-      chatRoom.messages.push(message._id)
+      // 최근 메시지가 배열의 앞에 삽임됨.
+      chatRoom.messages.unshift(message._id)
       await chatRoom.save()
       return message
     } catch (error) {

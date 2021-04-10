@@ -14,13 +14,12 @@ export default {
         trainerId,
         traineeId
       )
-      console.log(chatRoom) // null
       // trainerId 와 traineeId 로 생성된 chat room 이 없으면 먼저 room 생성
       if (!chatRoom) {
         chatRoom = await messengerService.createChatRoom(trainerId, traineeId)
       }
       // trainer 와 trainee 도큐먼트에 room id 값 insert
-      await messengerService.insertChatRoomId(trainerId, traineeId)
+      await messengerService.insertChatRoomId(trainerId, traineeId, chatRoom)
 
       return resUtil.success(
         res,
@@ -43,7 +42,7 @@ export default {
       const trainerId = req.decoded._id
       // trainer _id 로 chat room 리스트 불러오기
       const chatRoomList = await messengerService.getChatRoomList(trainerId)
-
+      // 최근 message 가 배열의 앞에 삽입됨
       return resUtil.success(
         res,
         CODE.OK,
