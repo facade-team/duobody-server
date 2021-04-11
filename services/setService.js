@@ -11,12 +11,13 @@ export default {
     }
   },
 
-  insertSet: async (sessionId, setNumber, weight, rep) => {
+  insertSet: async (sessionId, setNumber, weight, rep, minutes) => {
     try {
       const result = set.create({
         sessionId,
         set: setNumber,
         weight,
+        minutes,
         rep,
       })
 

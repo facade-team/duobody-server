@@ -130,13 +130,14 @@ export default {
             //req.session.sets 순회
             sessionObject.sets.map((setObject) => {
               return new Promise((resolve) => {
-                const { set, weight, rep } = setObject
+                const { set, weight, rep, minutes } = setObject
                 //set 생성
                 const setResult = setService.insertSet(
                   sessionId,
                   set,
                   weight,
-                  rep
+                  rep,
+                  minutes
                 )
 
                 resolve(setResult)
