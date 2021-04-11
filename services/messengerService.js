@@ -1,10 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import mongoose from 'mongoose'
-<<<<<<< HEAD
-import moment from 'moment'
-=======
->>>>>>> dev
 import ChatRoom from '../models/chatRoom'
 import Message from '../models/message'
 import Trainer from '../models/trainer'
