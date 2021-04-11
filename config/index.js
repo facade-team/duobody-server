@@ -68,6 +68,14 @@ export default {
     // Messenger
     SUCCESS_CREATE_CHATROOM: '채팅방 생성에 성공하였습니다.',
     FAIL_CREATE_CHATROOM: '채팅방 생성에 실패하였습니다.',
+    SUCCESS_READ_ALL_CHATROOMS: '모든 채팅방 조회에 성공하였습니다.',
+    FAIL_READ_ALL_CHATROOMS: '모든 채팅방 조회에 실패하였습니다.',
+    SUCCESS_READ_CHATROOMINFO: '채팅방 정보 조회에 성공하였습니다.',
+    FAIL_READ_CHATROOMINFO: '채팅방 정보 조회에 실패하였습니다.',
+    SUCCESS_SEND_MESSAGE: '메시지 전송에 성공하였습니다.',
+    FAIL_SEND_MESSAGE: '메시지 전송에 실패하였습니다.',
+
+    // Lesson, Session, Set
     SUCCESS_READ_LESSON: 'Lesson 조회에 성공하였습니다',
     SUCCESS_CREATE_LESSON: 'Lesson 생성에 성공하였습니다',
     SUCCESS_UPDATE_LESSON: 'Lesson 수정에 성공하였습니다',

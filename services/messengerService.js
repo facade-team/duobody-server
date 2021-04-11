@@ -47,4 +47,52 @@ export default {
       throw new Error(error)
     }
   },
+  getChatRoomList: async (trainerId) => {
+    try {
+      const chatRoomList = await Trainer.findById(trainerId, {
+        chatRoomIds: 1,
+        _id: 0,
+      }).populate({
+        path: 'chatRoomIds',
+        populate: { path: 'trainerId traineeId', select: 'name' },
+      })
+      return chatRoomList
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  getChatRoomInfo: async (chatRoomId) => {
+    try {
+      chatRoomId = mongoose.Types.ObjectId(chatRoomId)
+      const chatRoomInfo = await ChatRoom.findById(chatRoomId).populate({
+        path: 'trainerId traineeId messages',
+        select: 'name createdAt content',
+      })
+      return chatRoomInfo
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  sendMessage: async (chatRoomId, trainerId, content) => {
+    try {
+      chatRoomId = mongoose.Types.ObjectId(chatRoomId)
+      // trainer 가 속한 chatRoom 이 맞는지 검사
+      const chatRoom = await ChatRoom.findOne({ _id: chatRoomId, trainerId })
+      // trainer 가 속한 chatRoom 이 아니면 에러 throw
+      if (!chatRoom) throw new Error()
+      // console.log(chatRoom)
+      const message = await Message.create({
+        from: chatRoom.trainerId,
+        to: chatRoom.traineeId,
+        chatRoomId: chatRoom._id,
+        content,
+      })
+      // 최근 메시지가 배열의 앞에 삽임됨.
+      chatRoom.messages.unshift(message._id)
+      await chatRoom.save()
+      return message
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
