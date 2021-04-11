@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import mongoose from 'mongoose'
+import moment from 'moment'
 import ChatRoom from '../models/chatRoom'
 import Message from '../models/message'
 import Trainer from '../models/trainer'
@@ -56,7 +57,6 @@ export default {
         path: 'chatRoomIds',
         populate: { path: 'trainerId traineeId', select: 'name' },
       })
-
       return chatRoomList
     } catch (error) {
       throw new Error(error)
@@ -82,7 +82,6 @@ export default {
       // trainer 가 속한 chatRoom 이 아니면 에러 throw
       if (!chatRoom) throw new Error()
       // console.log(chatRoom)
-      // TODO: 날짜 형식 아직 안맞췄음
       const message = await Message.create({
         from: chatRoom.trainerId,
         to: chatRoom.traineeId,

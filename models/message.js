@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import moment from 'moment'
 
 const { Schema } = mongoose
 const {
@@ -32,7 +33,7 @@ const messageSchema = new Schema({
 
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: moment(),
     required: true,
   },
 })
