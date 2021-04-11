@@ -59,8 +59,6 @@ export default {
       lessons.forEach((lesson) => {
         const startTime = getTime(lesson.start)
         const endTime = getTime(lesson.end)
-        console.log(lesson.start.getTime(), lesson.end.getTime())
-        console.log(startTime, endTime)
         result.push({ _id: lesson._id, start: startTime, end: endTime })
       })
 
