@@ -13,6 +13,11 @@ const lessonSchema = new Schema({
     ref: 'Trainee',
   },
 
+  trainerId: {
+    type: ObjectId,
+    required: true,
+  },
+
   // 시작시간
   start: {
     type: Date,

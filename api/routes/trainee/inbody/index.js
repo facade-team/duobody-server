@@ -4,26 +4,37 @@ import inbodyController from '../../../../controllers/inbodyController'
 
 const router = express.Router()
 
+//날짜 구간 인바디 검색
 router.get(
-  '/:traineeId/date/:startDate/:endDate',
+  '/:traineeId/inbody/date/:startDate/:endDate',
   verifyToken,
   inbodyController.getInbodyInfoByDateTerm
 )
 
 router.get(
-  '/:traineeId/date/:startDate',
+  '/:traineeId/inbody/date/:date',
   verifyToken,
   inbodyController.getInbodyInfoByDate
 )
 
-router.get('/:traineeId/date', verifyToken, inbodyController.getInbodyDate)
+//trainee의 최신 인바디 정보
+router.get(
+  '/:traineeId/inbody/latest',
+  verifyToken,
+  inbodyController.getLatestInbody
+)
 
-router.get('/:traineeId', verifyToken, inbodyController.getLatestInbody)
+//trainee의 모든 인바디 날짜 정보
+router.get('/:traineeId/inbody', verifyToken, inbodyController.getInbodyDate)
 
-router.post('/', verifyToken, inbodyController.insertInbody)
+router.post('/inbody', verifyToken, inbodyController.insertInbody)
 
-router.put('/', verifyToken, inbodyController.updateInbody)
+router.put('/inbody', verifyToken, inbodyController.updateInbody)
 
-router.delete('/:inbodyId', verifyToken, inbodyController.deleteInbody)
+router.delete(
+  '/:traineeId/inbody/:inbodyId',
+  verifyToken,
+  inbodyController.deleteInbody
+)
 
 export default router

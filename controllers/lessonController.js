@@ -3,20 +3,26 @@ import resUtil from '../utils/resUtil'
 import lessonService from '../services/lessonService'
 import sessionService from '../services/sessionService'
 import setService from '../services/setService'
-import { stringToDate, monthToDate, getDate } from '../utils/date'
+import {
+  stringToDate,
+  monthToDate,
+  nextMonthToDate,
+  getDate,
+  dateToString,
+} from '../utils/date'
 import mongoose from 'mongoose'
 
 const { CODE, MSG } = config
 
 export default {
-  getLessonDate: async (req, res) => {
+  getLessonMonthDate: async (req, res) => {
     try {
       const { traineeId, month } = req.params
 
       const thisMonth = monthToDate(month)
-      const nextMonth = monthToDate(month + 1)
+      const nextMonth = nextMonthToDate(month)
 
-      let lessonDate = await lessonService.getLessonDate(
+      let lessonDate = await lessonService.getLessonMonthDate(
         traineeId,
         thisMonth,
         nextMonth
@@ -27,11 +33,30 @@ export default {
         result.push({ _id: object._id, date: getDate(object.start) })
       })
 
-      console.log(result)
-
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
       console.log(error)
+      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+    }
+  },
+
+  getLessonDate: async (req, res) => {
+    try {
+      const { traineeId } = req.params
+
+      const lessonDate = await lessonService.getLessonDate(traineeId)
+
+      const result = []
+
+      lessonDate.forEach((lesson) => {
+        const date = dateToString(lesson.start)
+
+        result.push({ _id: lesson._id, date: date })
+      })
+
+      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+    } catch (error) {
+      console.error(error)
       return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
     }
   },
@@ -70,7 +95,7 @@ export default {
 
       const result = await lessonService.getLessonById(lessonId)
 
-      return resUtil(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
       console.log(error)
       return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
@@ -83,21 +108,30 @@ export default {
     }
 
     try {
+      const trainerId = req.decoded._id
       const { traineeId, start, end } = req.body
       const sessions = req.body.session
       const sessionIds = []
 
-      const lesson = await lessonService.insertLesson(traineeId, start, end)
+      const lesson = await lessonService.insertLesson(
+        trainerId,
+        traineeId,
+        start,
+        end
+      )
       const lessonId = lesson._id
 
       await Promise.all(
+        //req.session 배열 순회
         sessions.map(async (sessionObject) => {
           const sessionId = new mongoose.Types.ObjectId()
           sessionIds.push(sessionId)
           await Promise.all(
-            sessionObject.set.map((setObject) => {
+            //req.session.sets 순회
+            sessionObject.sets.map((setObject) => {
               return new Promise((resolve) => {
                 const { set, weight, rep } = setObject
+                //set 생성
                 const setResult = setService.insertSet(
                   sessionId,
                   set,
@@ -111,6 +145,7 @@ export default {
           ).then((values) => {
             const { part, field } = sessionObject
             return new Promise((resolve) => {
+              //session 생성
               const sessionResult = sessionService.insertSesssion(
                 sessionId,
                 lessonId,
@@ -122,8 +157,10 @@ export default {
               if (sessionResult) resolve(sessionResult)
             }).then(async () => {
               await Promise.all(
+                // 생성된 session배열 순회
                 values.map((setObject) => {
                   return new Promise((resolve) => {
+                    //생성한 session의 sets에 setId정보 push
                     const sessionResult = sessionService.pushSet(
                       sessionId,
                       setObject._id
@@ -139,8 +176,10 @@ export default {
           })
         })
       ).then(async () => {
+        //sessionId 배열 순회
         let promises = sessionIds.map((sessionId) => {
           return new Promise((resolve) => {
+            // 생성된 lesson의 sessions에 sessionId push
             const lessonResult = lessonService.pushSession(lessonId, sessionId)
 
             resolve(lessonResult)

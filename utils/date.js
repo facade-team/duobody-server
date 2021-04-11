@@ -1,21 +1,27 @@
+import moment from 'moment'
+
 const stringToDate = (dateString) => {
   const y = dateString.substr(0, 4)
   const m = dateString.substr(4, 2)
   const d = dateString.substr(6, 2)
 
-  return new Date(Number(y), Number(m) - 1, Number(d) + 1, 0, 0, 0)
+  return moment(`${y}-${m}-${d}`, 'YYYY-MM-DD').valueOf()
+  // return new Date(Number(y), Number(m) - 1, Number(d), 0, 0, 0)
+}
+
+const stringToTomorrowDate = (dateString) => {
+  return moment(dateString, 'YYYY-MM-DD').add(1, 'days').valueOf()
 }
 
 const monthToDate = (month) => {
-  const date = new Date()
+  const y = month.substr(0, 4)
+  const m = month.substr(4, 2)
 
-  date.setMonth(month - 1)
-  date.setDate(1)
-  date.setHours(0)
-  date.setMinutes(0)
-  date.setSeconds(0)
+  return moment(`${y}-${m}-01`, 'YYYY-MM-DD').valueOf()
+}
 
-  return date
+const nextMonthToDate = (month) => {
+  return moment(month).add(1, 'months').valueOf()
 }
 
 const getDate = (date) => {
@@ -23,4 +29,24 @@ const getDate = (date) => {
 
   return result
 }
-export { stringToDate, monthToDate, getDate }
+
+const dateToString = (date) => {
+  const format = 'YYYY-MM-DD'
+
+  return moment(date).format(format)
+}
+
+const getTime = (time) => {
+  const format = 'HH-mm'
+
+  return moment(time).format(format)
+}
+export {
+  stringToDate,
+  stringToTomorrowDate,
+  monthToDate,
+  nextMonthToDate,
+  getDate,
+  dateToString,
+  getTime,
+}

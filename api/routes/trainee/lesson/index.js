@@ -4,22 +4,40 @@ import lessonController from '../../../../controllers/lessonController'
 
 const router = express.Router()
 
+//해당 달에 있는 lesson날짜 조회
 router.get(
-  '/:traineeId/month/:month',
+  '/:traineeId/lesson/month/:month',
   verifyToken,
-  lessonController.getLessonDate
+  lessonController.getLessonMonthDate
 )
 
+//날짜로 lesson 조회
 router.get(
-  '/:traineeId/date/:date',
+  '/:traineeId/lesson/date/:date',
   verifyToken,
   lessonController.getLessonByDate
 )
 
-router.get('/:traineeId/:lessonId', verifyToken, lessonController.getLessonById)
+//trainee의 모든 레슨 날짜 조회
+router.get(
+  '/:traineeId/lesson/date',
+  verifyToken,
+  lessonController.getLessonDate
+)
 
-router.post('/', verifyToken, lessonController.insertLesson)
+//lessonid로 lesson조회
+router.get(
+  '/:traineeId/lesson/:lessonId',
+  verifyToken,
+  lessonController.getLessonById
+)
 
-router.delete('/:lessonId', verifyToken, lessonController.deleteLesson)
+router.post('/lesson', verifyToken, lessonController.insertLesson)
+
+router.delete(
+  '/:traineeId/lesson/:lessonId',
+  verifyToken,
+  lessonController.deleteLesson
+)
 
 export default router

@@ -14,7 +14,8 @@ export default {
     }
   },
 
-  getLessonDsate: async (traineeId, thisMonth, nextMonth) => {
+  // 날짜 정보만 추출
+  getLessonMonthDate: async (traineeId, thisMonth, nextMonth) => {
     try {
       const result = lesson
         .find(
@@ -29,6 +30,7 @@ export default {
         .gte(thisMonth)
         .where('end')
         .lt(nextMonth)
+        .sort('-start')
 
       return result
     } catch (error) {
@@ -36,6 +38,18 @@ export default {
     }
   },
 
+  //trainee의 모든 레슨날짜
+  getLessonDate: async (traineeId) => {
+    try {
+      const result = await lesson.find({ traineeId }, { start: 1 })
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  //날짜로 trainee의 레슨 조회
   getLessonByDate: async (traineeId, date) => {
     try {
       const endDate = new Date(date)
@@ -79,9 +93,48 @@ export default {
     }
   },
 
-  insertLesson: async (traineeId, start, end) => {
+  getTrainerLessonDateByMonth: async (trainerId, thisMonth, nextMonth) => {
+    try {
+      const result = await lesson
+        .find({}, { start: true })
+        .where('trainerId')
+        .equals(trainerId)
+        .where('start')
+        .gte(thisMonth)
+        .where('end')
+        .lt(nextMonth)
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  getTrainerLessonByDate: async (trainerId, today, tomorrow) => {
+    try {
+      const result = await lesson
+        .find({}, { traineeId: true, start: true, end: true })
+        .where('trainerId')
+        .equals(trainerId)
+        .where('start')
+        .gte(today)
+        .where('end')
+        .lt(tomorrow)
+        .populate({
+          path: 'traineeId',
+          select: '_id name',
+        })
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  insertLesson: async (trainerId, traineeId, start, end) => {
     try {
       const result = await lesson.create({
+        trainerId,
         traineeId,
         start,
         end,

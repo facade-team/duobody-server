@@ -9,11 +9,9 @@ const userService = new UserService()
   READ : GET
   UPDATE : PATCH, PUT
   DELETE : DELETE
-
   GET : When you want to get something
   POST : When you want to create something completely new
   DELETE : When you want to remove something
-
   PATCH VS PUT
   PATCH : When you want to modify something patially
   PUT : When you want to overwrite EVERYTHING
@@ -58,8 +56,12 @@ router.patch('/:id', async (req, res) => {
   const { id } = req.params
   const { name, password } = req.body
   const foundUser = await userService.findUserById(id)
-  if (name) { foundUser.name = name }
-  if (password) { foundUser.password = password }
+  if (name) {
+    foundUser.name = name
+  }
+  if (password) {
+    foundUser.password = password
+  }
   foundUser.save()
 
   res.send(foundUser)

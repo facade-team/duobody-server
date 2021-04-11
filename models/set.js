@@ -21,13 +21,15 @@ const setSchema = new Schema({
   //무게
   weight: {
     type: Number,
-    required: true,
   },
 
   //횟수
   rep: {
     type: Number,
-    required: true,
+  },
+
+  minutes: {
+    type: Number,
   },
 })
 
