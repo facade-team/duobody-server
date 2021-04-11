@@ -4,7 +4,19 @@ import lessonController from '../../../../controllers/lessonController'
 
 const router = express.Router()
 
-router.get('/:traineeId/:date', verifyToken, lessonController.getLessonByDate)
+router.get(
+  '/:traineeId/month/:month',
+  verifyToken,
+  lessonController.getLessonDate
+)
+
+router.get(
+  '/:traineeId/date/:date',
+  verifyToken,
+  lessonController.getLessonByDate
+)
+
+router.get('/:traineeId/:lessonId', verifyToken, lessonController.getLessonById)
 
 router.post('/', verifyToken, lessonController.insertLesson)
 

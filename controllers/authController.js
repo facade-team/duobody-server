@@ -119,6 +119,5 @@ export default {
         console.log(err)
         return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_LOGIN)
       })
-
   },
 }
