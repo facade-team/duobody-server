@@ -3,7 +3,13 @@ import resUtil from '../utils/resUtil'
 import lessonService from '../services/lessonService'
 import sessionService from '../services/sessionService'
 import setService from '../services/setService'
-import { stringToDate, monthToDate, getDate, dateToString } from '../utils/date'
+import {
+  stringToDate,
+  monthToDate,
+  nextMonthToDate,
+  getDate,
+  dateToString,
+} from '../utils/date'
 import mongoose from 'mongoose'
 
 const { CODE, MSG } = config
@@ -14,7 +20,7 @@ export default {
       const { traineeId, month } = req.params
 
       const thisMonth = monthToDate(month)
-      const nextMonth = monthToDate((parseInt(month) + 1).toString())
+      const nextMonth = nextMonthToDate(month)
 
       let lessonDate = await lessonService.getLessonMonthDate(
         traineeId,
@@ -43,7 +49,7 @@ export default {
       const result = []
 
       lessonDate.forEach((lesson) => {
-        const date = dateToString(lesson.start, '-')
+        const date = dateToString(lesson.start)
 
         result.push({ _id: lesson._id, date: date })
       })
@@ -102,11 +108,17 @@ export default {
     }
 
     try {
+      const trainerId = req.decoded._id
       const { traineeId, start, end } = req.body
       const sessions = req.body.session
       const sessionIds = []
 
-      const lesson = await lessonService.insertLesson(traineeId, start, end)
+      const lesson = await lessonService.insertLesson(
+        trainerId,
+        traineeId,
+        start,
+        end
+      )
       const lessonId = lesson._id
 
       await Promise.all(

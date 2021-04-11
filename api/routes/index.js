@@ -3,6 +3,7 @@ import express from 'express'
 import authRouter from './auth'
 import traineeRouter from './trainee'
 import messengerRouter from './messenger'
+import trainerRouter from './trainer'
 
 const router = express.Router()
 
@@ -19,6 +20,8 @@ router.use('/auth', authRouter)
 router.use('/trainee', traineeRouter)
 
 router.use('/messenger', messengerRouter)
+
+router.use('/trainer', trainerRouter)
 
 router.use((req, res, next) => {
   // TODO: 404에러 router 작성
