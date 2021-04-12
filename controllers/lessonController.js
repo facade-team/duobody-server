@@ -150,10 +150,8 @@ export default {
               const sessionResult = sessionService.insertSesssion(
                 sessionId,
                 lessonId,
-                {
-                  part,
-                  field,
-                }
+                part,
+                field
               )
               if (sessionResult) resolve(sessionResult)
             }).then(async () => {

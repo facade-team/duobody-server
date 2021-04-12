@@ -41,9 +41,8 @@ export default {
     }
   },
 
-  insertSesssion: async (_id, lessonId, sessionInfo) => {
+  insertSesssion: async (_id, lessonId, part, field) => {
     try {
-      const { part, field } = sessionInfo
       const result = await session.create({
         _id,
         lessonId,
