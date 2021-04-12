@@ -113,7 +113,7 @@ export default {
   getTrainerLessonByDate: async (trainerId, today, tomorrow) => {
     try {
       const result = await lesson
-        .find({}, { traineeId: true, start: true, end: true })
+        .find({}, { traineeId: true, name: true, start: true, end: true })
         .where('trainerId')
         .equals(trainerId)
         .where('start')
