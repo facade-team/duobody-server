@@ -219,26 +219,12 @@ export default {
 
       const { sessions } = result
 
+      await sessionService.deleteSessionByLessionId(lessonId)
+
       let promises = sessions.map((sessionId) => {
         return new Promise((resolve) => {
-          const session = sessionService.deleteSession(sessionId)
-          resolve(session)
-        })
-      })
-
-      let sets = []
-      await Promise.all(promises).then((values) => {
-        values.forEach((setObject) => {
-          setObject.sets.forEach((setId) => {
-            sets.push(setId)
-          })
-        })
-      })
-
-      promises = sets.map((setId) => {
-        return new Promise((resolve) => {
-          const set = setService.deleteSet(setId)
-          resolve(set)
+          setService.deleteSetBySessionId(sessionId)
+          resolve()
         })
       })
 
