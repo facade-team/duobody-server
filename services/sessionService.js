@@ -86,7 +86,7 @@ export default {
 
   deleteSessionByLessionId: async (lessonId) => {
     try {
-      const result = await session.remove({
+      const result = await session.deleteMany({
         lessonId,
       })
 
