@@ -3,7 +3,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default {
-  MONGO_URL: process.env.MONGO_URL,
+  // TODO: 배포용 db서버 나오면 바꾸기
+  MONGO_URL: process.env.PRODUCTION
+    ? process.env.MONGO_PROD_URL
+    : process.env.MONGO_DEV_URL,
+  // MONGO_URL: process.env.MONGO_DEV_URL,
   PORT: process.env.PORT,
   CODE: {
     // https://developer.mozilla.org/ko/docs/Web/HTTP/Status 를 읽어볼 것
