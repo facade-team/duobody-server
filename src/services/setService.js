@@ -36,4 +36,12 @@ export default {
       throw new Error(error)
     }
   },
+
+  deleteSetBySessionId: async (sessionId) => {
+    try {
+      await set.deleteMany({ sessionId })
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }

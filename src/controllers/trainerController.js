@@ -59,7 +59,11 @@ export default {
       lessons.forEach((lesson) => {
         const startTime = getTime(lesson.start)
         const endTime = getTime(lesson.end)
-        result.push({ _id: lesson._id, start: startTime, end: endTime })
+        result.push({
+          _id: lesson.traineeId._id,
+          name: lesson.traineeId.name,
+          time: `${startTime} - ${endTime}`,
+        })
       })
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)

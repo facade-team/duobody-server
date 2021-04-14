@@ -3,6 +3,7 @@ import resUtil from '../utils/resUtil'
 import lessonService from '../services/lessonService'
 import sessionService from '../services/sessionService'
 import setService from '../services/setService'
+import traineeService from '../services/traineeService'
 import {
   stringToDate,
   monthToDate,
@@ -13,6 +14,25 @@ import {
 import mongoose from 'mongoose'
 
 const { CODE, MSG } = config
+
+const deleteOneLesson = async (lessonId) => {
+  const result = await lessonService.deleteLesson(lessonId)
+
+  const { sessions } = result
+
+  await sessionService.deleteSessionByLessionId(lessonId)
+
+  let promises = sessions.map((sessionId) => {
+    return new Promise((resolve) => {
+      setService.deleteSetBySessionId(sessionId)
+      resolve()
+    })
+  })
+
+  await Promise.all(promises)
+
+  return result
+}
 
 export default {
   getLessonMonthDate: async (req, res) => {
@@ -113,6 +133,17 @@ export default {
       const sessions = req.body.session
       const sessionIds = []
 
+      // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
+      const realTrainerId = await traineeService.getMyTrainerId(traineeId)
+      // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것
+      if (!realTrainerId) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+      }
+      // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
+      if (trainerId !== realTrainerId.toString()) {
+        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+      }
+
       const lesson = await lessonService.insertLesson(
         trainerId,
         traineeId,
@@ -121,62 +152,61 @@ export default {
       )
       const lessonId = lesson._id
 
-      await Promise.all(
-        //req.session 배열 순회
-        sessions.map(async (sessionObject) => {
-          const sessionId = new mongoose.Types.ObjectId()
-          sessionIds.push(sessionId)
-          await Promise.all(
-            //req.session.sets 순회
-            sessionObject.sets.map((setObject) => {
-              return new Promise((resolve) => {
-                const { set, weight, rep, minutes } = setObject
-                //set 생성
-                const setResult = setService.insertSet(
-                  sessionId,
-                  set,
-                  weight,
-                  rep,
-                  minutes
-                )
+      //req.session 배열 순회
+      const sessionPromises = sessions.map(async (sessionObject) => {
+        const sessionId = new mongoose.Types.ObjectId()
+        sessionIds.push(sessionId)
 
-                resolve(setResult)
-              })
-            })
-          ).then((values) => {
-            const { part, field } = sessionObject
-            return new Promise((resolve) => {
-              //session 생성
-              const sessionResult = sessionService.insertSesssion(
-                sessionId,
-                lessonId,
-                {
-                  part,
-                  field,
-                }
-              )
-              if (sessionResult) resolve(sessionResult)
-            }).then(async () => {
-              await Promise.all(
-                // 생성된 session배열 순회
-                values.map((setObject) => {
-                  return new Promise((resolve) => {
-                    //생성한 session의 sets에 setId정보 push
-                    const sessionResult = sessionService.pushSet(
-                      sessionId,
-                      setObject._id
-                    )
+        //req.session.sets 순회
+        let setPromises = sessionObject.sets.map((setObject) => {
+          return new Promise((resolve) => {
+            const { set, weight, rep, minutes } = setObject
+            //set 생성
+            const setResult = setService.insertSet(
+              sessionId,
+              set,
+              weight,
+              rep,
+              minutes
+            )
 
-                    if (sessionResult) {
-                      resolve(sessionResult)
-                    }
-                  })
-                })
-              )
-            })
+            resolve(setResult)
           })
         })
-      ).then(async () => {
+
+        await Promise.all(setPromises).then((values) => {
+          const { part, field } = sessionObject
+          return new Promise((resolve) => {
+            //session 생성
+            const sessionResult = sessionService.insertSesssion(
+              sessionId,
+              lessonId,
+              part,
+              field
+            )
+            if (sessionResult) resolve(sessionResult)
+          }).then(async () => {
+            await Promise.all(
+              // 생성된 session배열 순회
+              values.map((setObject) => {
+                return new Promise((resolve) => {
+                  //생성한 session의 sets에 setId정보 push
+                  const sessionResult = sessionService.pushSet(
+                    sessionId,
+                    setObject._id
+                  )
+
+                  if (sessionResult) {
+                    resolve(sessionResult)
+                  }
+                })
+              })
+            )
+          })
+        })
+      })
+
+      await Promise.all(sessionPromises).then(async () => {
         //sessionId 배열 순회
         let promises = sessionIds.map((sessionId) => {
           return new Promise((resolve) => {
@@ -217,34 +247,7 @@ export default {
         return resUtil.fail(res, CODE.BAD_REQUEST, MSG.OUT_OF_VALUE)
       }
 
-      const result = await lessonService.deleteLesson(lessonId)
-
-      const { sessions } = result
-
-      let promises = sessions.map((sessionId) => {
-        return new Promise((resolve) => {
-          const session = sessionService.deleteSession(sessionId)
-          resolve(session)
-        })
-      })
-
-      let sets = []
-      await Promise.all(promises).then((values) => {
-        values.forEach((setObject) => {
-          setObject.sets.forEach((setId) => {
-            sets.push(setId)
-          })
-        })
-      })
-
-      promises = sets.map((setId) => {
-        return new Promise((resolve) => {
-          const set = setService.deleteSet(setId)
-          resolve(set)
-        })
-      })
-
-      await Promise.all(promises)
+      const result = await deleteOneLesson(lessonId)
 
       return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_LESSON, result)
     } catch (error) {
@@ -256,4 +259,6 @@ export default {
       )
     }
   },
+
+  deleteOneLesson,
 }
