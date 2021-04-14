@@ -29,6 +29,8 @@ export default {
     OUT_OF_VALUE: '파라미터 값이 잘못되었습니다.',
     INVALID_PARAMETER_TYPE: '파라미터 타입이 잘못되었습니다.',
     DB_ERROR: 'DB Error',
+    SERVER_ERROR: 'Server Error',
+    ERROR_404: '404 Error',
 
     // Trainee
     EXIST_TRAINEE: '이미 존재하는 Trainee입니다',
