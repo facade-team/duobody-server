@@ -5,6 +5,9 @@ dotenv.config()
 export default {
   MONGO_URL: process.env.MONGO_URL,
   PORT: process.env.PORT,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_ACCESS_KEY_SECRET: process.env.AWS_ACCESS_KEY_SECRET,
+  REGION: process.env.REGION,
   CODE: {
     // https://developer.mozilla.org/ko/docs/Web/HTTP/Status 를 읽어볼 것
 
@@ -92,5 +95,13 @@ export default {
     FAIL_READ_SESSION: 'Session 조회에 실패하였습니다',
     FAIL_UPDATE_SESSION: 'Session 수정에 실패하였습니다',
     FAIL_DELETE_SESSION: 'Session 삭제에 실패하였습니다',
+
+    // Exbody
+    SUCCESS_CREATE_EXBODYBEFORE: 'Exbody before 생성에 성공하였습니다.',
+    SUCCESS_CREATE_EXBODYAFTER: 'Exbody after 생성에 성공하였습니다.',
+    SUCCESS_READ_EXBODY: 'Exbody 조회에 성공하였습니다.',
+    FAIL_CREATE_EXBODYBEFORE: 'Exbody before 생성에 실패하였습니다.',
+    FAIL_CREATE_EXBODYAFTER: 'Exbody after 생성에 실패하였습니다.',
+    FAIL_READ_EXBODY: 'Exbody 조회에 실패하였습니다.',
   },
 }

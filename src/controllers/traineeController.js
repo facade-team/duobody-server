@@ -160,18 +160,14 @@ export default {
 
       const lessons = await lessonService.getLessons(traineeId)
 
-      console.log(lessons)
-
-      let promises = lessons.map((lesson) => {
+      const promises = lessons.map((lesson) => {
         return new Promise((resolve) => {
           const lessonDeleted = lessonController.deleteOneLesson(lesson._id)
           resolve(lessonDeleted)
         })
       })
 
-      await Promise.all(promises).then((lesson) => {
-        console.log(lesson)
-      })
+      await Promise.all(promises)
 
       return resUtil.success(
         res,
