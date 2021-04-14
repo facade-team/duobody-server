@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 /* eslint-disable global-require */
 import express from 'express'
 import config from './config'
+import 'regenerator-runtime/runtime.js'
 
 function startServer() {
   const app = express()
