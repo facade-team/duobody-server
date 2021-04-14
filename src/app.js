@@ -2,6 +2,7 @@
 /* eslint-disable global-require */
 import express from 'express'
 import config from './config'
+import { logger } from './config/winston'
 import 'regenerator-runtime/runtime.js'
 
 function startServer() {
@@ -9,9 +10,9 @@ function startServer() {
 
   require('./loaders').default(app)
 
-  app.listen(config.PORT, () =>
-    console.log(`👌Express Server Running on PORT ${config.PORT}`)
-  )
+  app.listen(config.PORT, () => {
+    logger.info(`👌Express Server Running on PORT ${config.PORT}`)
+  })
 }
 
 startServer()

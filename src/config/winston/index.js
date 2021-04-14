@@ -1,43 +1,78 @@
 import winston from 'winston'
 import winstonDaily from 'winston-daily-rotate-file'
+import config from '../'
 
-const logDir = 'logs'
+const logDir = config.PRODUCTION ? 'dist/logs/' : 'src/logs'
 
 const { combine, timestamp, printf } = winston.format
 
 const logFormat = printf((info) => {
-  return `{$info.timestamp} ${info.level} ${info.message}`
+  if (info.stack) {
+    return `${info.timestamp} ${info.level} - ${info.message}\n${info.stack}`
+  }
+  return `${info.timestamp} ${info.level} - ${info.message}`
 })
 
 const options = {
-  console: {},
+  info: {
+    level: 'info',
+    dirname: logDir,
+    filename: `%DATE%.log`, // 로그파일을 남길 경로
+    json: false,
+    maxsize: 5242880, // 5MB
+    maxFiles: 30,
+    colorize: false,
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:MM:SS',
+      }),
+      logFormat
+    ),
+  },
+  error: {
+    level: 'error',
+    dirname: `${logDir}/error`,
+    filename: `%DATE%.error.log`, // 로그파일을 남길 경로
+    handleExceptions: true,
+    json: false,
+    maxsize: 5242880, // 5MB
+    maxFiles: 30,
+    colorize: false,
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:MM:SS',
+      }),
+      logFormat
+    ),
+  },
+  // 개발 시 console에 출력
+  console: {
+    level: 'debug',
+    handleExceptions: true,
+    json: false,
+    colorize: true,
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:MM:SS',
+      }),
+      logFormat
+    ),
+  },
 }
 
-const logger = winston.createLogger({
-  foramt: combine(
-    timestamp({
-      format: 'YYYY-MM-DD HH:MM:SS',
-    }),
-    logFormat
-  ),
-  transports: [
-    // info 레벨 로그를 저장할 파일 설정
-    new winstonDaily({
-      level: 'info',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir,
-      filename: `%DATE%.log`,
-      maxFiles: 30, // 30일치 로그 파일 저장
-      zippedArchive: true,
-    }),
-    // error 레벨 로그를 저장할 파일 설정
-    new winstonDaily({
-      level: 'error',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/error', // error.log 파일은 /logs/error 하위에 저장
-      filename: `%DATE%.error.log`,
-      maxFiles: 30,
-      zippedArchive: true,
-    }),
-  ],
+const logger = new winston.createLogger({
+  transports: [new winstonDaily(options.info), new winstonDaily(options.error)],
 })
+
+if (!config.PRODUCTION) {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.simple()
+      ),
+    })
+  )
+}
+
+export { logger }

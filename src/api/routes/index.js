@@ -11,12 +11,6 @@ const router = express.Router()
 
 const { CODE, MSG } = config
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'this is home!',
-  })
-})
-
 // /api/auth
 router.use('/auth', authRouter)
 
