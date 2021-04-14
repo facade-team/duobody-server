@@ -62,6 +62,8 @@ export default {
         result.push({
           _id: lesson.traineeId._id,
           name: lesson.traineeId.name,
+          start: startTime,
+          end: endTime,
           time: `${startTime} - ${endTime}`,
         })
       })
