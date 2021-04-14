@@ -80,7 +80,7 @@ export default {
       const chatRoom = await ChatRoom.findOne({ _id: chatRoomId, trainerId })
       // trainer 가 속한 chatRoom 이 아니면 에러 throw
       if (!chatRoom) throw new Error()
-      // console.log(chatRoom)
+
       const message = await Message.create({
         from: chatRoom.trainerId,
         to: chatRoom.traineeId,

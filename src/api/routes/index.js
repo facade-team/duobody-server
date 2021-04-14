@@ -26,7 +26,6 @@ router.use((req, res, next) => {
 })
 
 router.use((err, req, res, next) => {
-  console.log(err.stack)
   return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.SERVER_ERROR)
 })
 
