@@ -6,7 +6,7 @@ const { MSG, CODE } = config
 export default {
   findById: async (lessonId) => {
     try {
-      const result = lesson.findById(lessonId)
+      const result = await lesson.findById(lessonId)
 
       return result
     } catch (error) {
@@ -14,10 +14,20 @@ export default {
     }
   },
 
+  getLessons: async (traineeId) => {
+    try {
+      const result = await lesson.find({ traineeId }, { _id: 1 })
+
+      return result
+    } catch (error) {
+      throw new Error()
+    }
+  },
+
   // 날짜 정보만 추출
   getLessonMonthDate: async (traineeId, thisMonth, nextMonth) => {
     try {
-      const result = lesson
+      const result = await lesson
         .find(
           {
             traineeId,
@@ -79,13 +89,16 @@ export default {
 
   getLessonById: async (_id) => {
     try {
-      const result = await lesson.findById(_id).populate({
-        path: 'sessions',
-        populate: {
-          path: 'sets',
-          options: { sort: { set: 1 } },
-        },
-      })
+      const result = await lesson
+        .findById(_id)
+        .populate({
+          path: 'sessions',
+          populate: {
+            path: 'sets',
+            options: { sort: { set: 1 } },
+          },
+        })
+        .lean()
 
       return result
     } catch (error) {
@@ -113,7 +126,7 @@ export default {
   getTrainerLessonByDate: async (trainerId, today, tomorrow) => {
     try {
       const result = await lesson
-        .find({}, { traineeId: true, start: true, end: true })
+        .find({}, { traineeId: true, name: true, start: true, end: true })
         .where('trainerId')
         .equals(trainerId)
         .where('start')

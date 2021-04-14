@@ -2,6 +2,8 @@ import mongoose from 'mongoose'
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import traineeService from '../services/traineeService'
+import lessonService from '../services/lessonService'
+import lessonController from './lessonController'
 
 const { CODE, MSG } = config
 
@@ -155,6 +157,22 @@ export default {
         trainerId,
         traineeId
       )
+
+      const lessons = await lessonService.getLessons(traineeId)
+
+      console.log(lessons)
+
+      let promises = lessons.map((lesson) => {
+        return new Promise((resolve) => {
+          const lessonDeleted = lessonController.deleteOneLesson(lesson._id)
+          resolve(lessonDeleted)
+        })
+      })
+
+      await Promise.all(promises).then((lesson) => {
+        console.log(lesson)
+      })
+
       return resUtil.success(
         res,
         CODE.OK,
