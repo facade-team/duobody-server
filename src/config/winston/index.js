@@ -1,6 +1,6 @@
 import winston from 'winston'
 import winstonDaily from 'winston-daily-rotate-file'
-import config from '../'
+import config from '..'
 
 const logDir = config.PRODUCTION ? 'dist/logs/' : 'src/logs'
 
@@ -16,7 +16,7 @@ const logFormat = printf((info) => {
 const options = {
   info: {
     level: 'info',
-    dirname: logDir,
+    dirname: `${logDir}/info`,
     filename: `%DATE%.log`, // 로그파일을 남길 경로
     json: false,
     maxsize: 5242880, // 5MB
@@ -73,6 +73,9 @@ if (!config.PRODUCTION) {
       ),
     })
   )
+  process.on('uncaughtException', (error) => {
+    console.log(error)
+  })
 }
 
 export { logger }

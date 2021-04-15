@@ -14,9 +14,20 @@ export default {
         exbodyBefore: trainee.exbodyBefore,
         exbodyAfter: trainee.exbodyAfter,
       }
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_EXBODY, exbodies)
+      return resUtil.success(
+        req,
+        res,
+        CODE.OK,
+        MSG.SUCCESS_READ_EXBODY,
+        exbodies
+      )
     } catch (error) {
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_EXBODY)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_EXBODY
+      )
     }
   },
   pushExbodyBefore: async (req, res) => {
@@ -30,6 +41,7 @@ export default {
         location
       )
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_EXBODYBEFORE,
@@ -37,6 +49,7 @@ export default {
       )
     } catch (error) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_CREATE_EXBODYBEFORE
@@ -54,6 +67,7 @@ export default {
         location
       )
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_EXBODYAFTER,
@@ -61,6 +75,7 @@ export default {
       )
     } catch (error) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_CREATE_EXBODYAFTER
