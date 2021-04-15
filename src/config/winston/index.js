@@ -13,6 +13,7 @@ const logFormat = printf((info) => {
   return `${info.timestamp} ${info.level} - ${info.message}`
 })
 
+// FIXME: production 모드일때 시간이 제대로 안뜨는 문제가 있음
 const options = {
   info: {
     level: 'info',
