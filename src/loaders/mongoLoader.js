@@ -2,7 +2,6 @@ import mongoose from 'mongoose'
 import config from '../config'
 
 const mongoLoader = () => {
-  console.log('mongo')
   mongoose.connect(config.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

@@ -22,14 +22,15 @@ export default {
       await messengerService.insertChatRoomId(trainerId, traineeId, chatRoom)
 
       return resUtil.success(
+        req,
         res,
         CODE.OK,
         MSG.SUCCESS_CREATE_CHATROOM,
         chatRoom
       )
     } catch (error) {
-      console.log(error)
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_CREATE_CHATROOM
@@ -44,14 +45,15 @@ export default {
       const chatRoomList = await messengerService.getChatRoomList(trainerId)
       // 최근 message 가 배열의 앞에 삽입됨
       return resUtil.success(
+        req,
         res,
         CODE.OK,
         MSG.SUCCESS_READ_ALL_CHATROOMS,
         chatRoomList
       )
     } catch (error) {
-      console.log(error)
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_READ_ALL_CHATROOMS
@@ -63,14 +65,15 @@ export default {
       const { chatRoomId } = req.params
       const chatRoomInfo = await messengerService.getChatRoomInfo(chatRoomId)
       return resUtil.success(
+        req,
         res,
         CODE.OK,
         MSG.SUCCESS_READ_CHATROOMINFO,
         chatRoomInfo
       )
     } catch (error) {
-      console.log(error)
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_READ_CHATROOMINFO
@@ -89,14 +92,15 @@ export default {
         content
       )
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_SEND_MESSAGE,
         result
       )
     } catch (error) {
-      console.log(error)
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_SEND_MESSAGE

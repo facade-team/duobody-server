@@ -3,7 +3,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export default {
-  MONGO_URL: process.env.MONGO_URL,
+  // TODO: 배포용 db서버 나오면 바꾸기
+  PRODUCTION: process.env.PRODUCTION,
+  MONGO_URL: process.env.PRODUCTION
+    ? process.env.MONGO_PROD_URL
+    : process.env.MONGO_DEV_URL,
   PORT: process.env.PORT,
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
   AWS_ACCESS_KEY_SECRET: process.env.AWS_ACCESS_KEY_SECRET,
@@ -32,6 +36,8 @@ export default {
     OUT_OF_VALUE: '파라미터 값이 잘못되었습니다.',
     INVALID_PARAMETER_TYPE: '파라미터 타입이 잘못되었습니다.',
     DB_ERROR: 'DB Error',
+    SERVER_ERROR: 'Server Error',
+    ERROR_404: '404 Error',
 
     // Trainee
     EXIST_TRAINEE: '이미 존재하는 Trainee입니다',

@@ -1,17 +1,6 @@
 /* eslint-disable class-methods-use-this */
-import lesson from '../models/lesson'
+
 import inbody from '../models/inbody'
-
-// async function getLessons(id) {
-//   try {
-//     const lessons = await lesson.find({ trainerId: id })
-
-//     return lessons
-//   } catch (err) {
-//     console.error(err)
-//     next(err)
-//   }
-// }
 
 async function getLatestInbody(trainerId, traineeId) {
   try {
@@ -33,9 +22,7 @@ async function getLatestInbody(trainerId, traineeId) {
 
     return inbodyInfo[0]
   } catch (err) {
-    console.error(err)
-
-    return err
+    throw new Error(err)
   }
 }
 
@@ -55,9 +42,7 @@ async function insertInbody(trainerId, traineeId, inbodyInfo) {
 
     return result
   } catch (err) {
-    console.error(err)
-
-    return err
+    throw new Error(err)
   }
 }
 
@@ -73,9 +58,7 @@ async function updateInbody(_id, inbodyInfo) {
 
     return result
   } catch (err) {
-    console.error(err)
-
-    return err
+    throw new Error(err)
   }
 }
 
@@ -85,9 +68,7 @@ async function deleteInbody(_id) {
 
     return result
   } catch (err) {
-    console.error(err)
-
-    return err
+    throw new Error(err)
   }
 }
 
@@ -102,8 +83,7 @@ async function getInbodyDate(traineeId) {
 
     return date
   } catch (err) {
-    console.error(err)
-    next(err)
+    throw new Error(err)
   }
 }
 
@@ -136,9 +116,7 @@ async function getInbodyInfoByDate(id, traineeId, startDate, endDate) {
 
     return result
   } catch (err) {
-    console.error(err)
-
-    return err
+    throw new Error(err)
   }
 }
 

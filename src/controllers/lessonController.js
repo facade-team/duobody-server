@@ -53,10 +53,14 @@ export default {
         result.push({ _id: object._id, date: getDate(object.start) })
       })
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.log(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 
@@ -74,16 +78,20 @@ export default {
         result.push({ _id: lesson._id, date: date })
       })
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.error(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 
   getLessonByDate: async (req, res) => {
     if (!req.params.traineeId || !req.params.date) {
-      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
     }
 
     try {
@@ -95,19 +103,23 @@ export default {
       const result = await lessonService.getLessonByDate(traineeId, date)
 
       if (!result[0]) {
-        return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, null)
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, null)
       }
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.log(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 
   getLessonById: async (req, res) => {
     if (!req.params.lessonId) {
-      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.FAIL_READ_LESSON)
     }
 
     try {
@@ -115,16 +127,20 @@ export default {
 
       const result = await lessonService.getLessonById(lessonId)
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.log(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 
   insertLesson: async (req, res) => {
     if (!req.body.traineeId || !req.body.start || !req.body.end) {
-      return resUtil.fail(res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
+      return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
 
     try {
@@ -137,11 +153,11 @@ export default {
       const realTrainerId = await traineeService.getMyTrainerId(traineeId)
       // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것
       if (!realTrainerId) {
-        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
       }
       // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
       if (trainerId !== realTrainerId.toString()) {
-        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
       }
 
       const lesson = await lessonService.insertLesson(
@@ -223,14 +239,14 @@ export default {
       const result = await lessonService.getLessonById(lessonId)
 
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_LESSON,
         result
       )
     } catch (error) {
-      console.error(error)
-      return resUtil.fail(res, error.CODE, error.MSG)
+      return resUtil.fail(req, res, error.CODE, error.MSG)
     }
   },
 
@@ -244,15 +260,21 @@ export default {
       const checkExist = await lessonService.findById(lessonId)
 
       if (!checkExist) {
-        return resUtil.fail(res, CODE.BAD_REQUEST, MSG.OUT_OF_VALUE)
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.OUT_OF_VALUE)
       }
 
       const result = await deleteOneLesson(lessonId)
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_DELETE_LESSON, result)
+      return resUtil.success(
+        req,
+        res,
+        CODE.OK,
+        MSG.SUCCESS_DELETE_LESSON,
+        result
+      )
     } catch (error) {
-      console.error(error)
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_DELETE_LESSON

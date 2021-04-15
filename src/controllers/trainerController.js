@@ -33,10 +33,14 @@ export default {
         result.push({ _id: lesson._id, date: date })
       })
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.error(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 
@@ -62,14 +66,20 @@ export default {
         result.push({
           _id: lesson.traineeId._id,
           name: lesson.traineeId.name,
+          start: startTime,
+          end: endTime,
           time: `${startTime} - ${endTime}`,
         })
       })
 
-      return resUtil.success(res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
     } catch (error) {
-      console.error(error)
-      return resUtil.fail(res, CODE.INTERNAL_SERVER_ERROR, MSG.FAIL_READ_LESSON)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON
+      )
     }
   },
 }
