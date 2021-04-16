@@ -47,7 +47,6 @@ export default {
     const { trainerId, secret } = req.body
     try {
       const trainer = await Trainer.findOne({ trainerId })
-      // FIXME 이미 확인되었을 때 bad request 띄워줘야함
       if (!trainer) {
         return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NOT_EXIST_TRAINER)
       }

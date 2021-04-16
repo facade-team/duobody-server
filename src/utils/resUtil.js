@@ -31,14 +31,14 @@ export default {
   fail: (req, res, statusCode, msg, errorStack) => {
     let message
     if (req.decoded) {
-      if (req.errorStack) {
-        message = `${req.method} ${req.originalUrl} ${statusCode} (requester: ${req.decoded._id})\nmessage: ${msg}\n${req.errorStack}\n`
+      if (errorStack) {
+        message = `${req.method} ${req.originalUrl} ${statusCode} (requester: ${req.decoded._id})\nmessage: ${msg}\n${errorStack}\n`
       } else {
         message = `${req.method} ${req.originalUrl} ${statusCode} (requester: ${req.decoded._id})\nmessage: ${msg}\n`
       }
     } else {
-      if (req.errorStack) {
-        message = `${req.method} ${req.originalUrl} ${statusCode} \nmessage: ${msg}\n${req.errorStack}\n`
+      if (errorStack) {
+        message = `${req.method} ${req.originalUrl} ${statusCode} \nmessage: ${msg}\n${errorStack}\n`
       } else {
         message = `${req.method} ${req.originalUrl} ${statusCode} \nmessage: ${msg}\n`
       }

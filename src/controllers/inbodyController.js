@@ -129,6 +129,7 @@ export default {
       )
 
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_INBODY,
@@ -136,6 +137,7 @@ export default {
       )
     } catch (err) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
         MSG.FAIL_CREATE_INBODY
