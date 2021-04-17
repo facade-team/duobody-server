@@ -144,8 +144,22 @@ export default {
     }
   },
 
-  insertLesson: async (trainerId, traineeId, start, end) => {
+  insertLesson: async (trainerId, traineeId, startTime, endTime) => {
     try {
+      const check = await lesson.find({
+        $or: [
+          {
+            $and: [{ start: { $lte: startTime } }, { end: { $gt: startTime } }],
+          },
+          {
+            $and: [{ start: { $lt: endTime } }, { end: { $gte: endTime } }],
+          },
+        ],
+      })
+      if (check.length) {
+        return null
+      }
+
       const result = await lesson.create({
         trainerId,
         traineeId,
@@ -155,8 +169,6 @@ export default {
 
       return result
     } catch (error) {
-      error.MSG = MSG.DB_ERROR
-      error.CODE = CODE.INTERNAL_SERVER_ERROR
       throw new Error(error)
     }
   },

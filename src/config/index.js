@@ -102,6 +102,7 @@ export default {
     FAIL_READ_SESSION: 'Session 조회에 실패하였습니다',
     FAIL_UPDATE_SESSION: 'Session 수정에 실패하였습니다',
     FAIL_DELETE_SESSION: 'Session 삭제에 실패하였습니다',
+    LESSON_EXIST_AT_THE_TIME: '해당 시간에 세션이 이미 있습니다',
 
     // Exbody
     SUCCESS_CREATE_EXBODYBEFORE: 'Exbody before 생성에 성공하였습니다.',

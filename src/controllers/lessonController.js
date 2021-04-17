@@ -178,6 +178,16 @@ export default {
         start,
         end
       )
+
+      if (lesson == null) {
+        return resUtil.fail(
+          req,
+          res,
+          CODE.BAD_REQUEST,
+          MSG.LESSON_EXIST_AT_THE_TIME
+        )
+      }
+
       const lessonId = lesson._id
 
       if (!sessions) {
