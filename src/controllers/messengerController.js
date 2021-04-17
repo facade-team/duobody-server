@@ -33,7 +33,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_CHATROOM
+        MSG.FAIL_CREATE_CHATROOM,
+        error.stack
       )
     }
   },
@@ -56,7 +57,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_ALL_CHATROOMS
+        MSG.FAIL_READ_ALL_CHATROOMS,
+        error.stack
       )
     }
   },
@@ -76,7 +78,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_CHATROOMINFO
+        MSG.FAIL_READ_CHATROOMINFO,
+        error.stack
       )
     }
   },
@@ -103,7 +106,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_SEND_MESSAGE
+        MSG.FAIL_SEND_MESSAGE,
+        error.stack
       )
     }
   },

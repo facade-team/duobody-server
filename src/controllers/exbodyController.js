@@ -26,7 +26,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_EXBODY
+        MSG.FAIL_READ_EXBODY,
+        error.stack
       )
     }
   },
@@ -52,7 +53,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_EXBODYBEFORE
+        MSG.FAIL_CREATE_EXBODYBEFORE,
+        error.stack
       )
     }
   },
@@ -78,7 +80,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_EXBODYAFTER
+        MSG.FAIL_CREATE_EXBODYAFTER,
+        error.stack
       )
     }
   },
