@@ -180,6 +180,15 @@ export default {
       )
       const lessonId = lesson._id
 
+      if (!sessions) {
+        return resUtil.success(
+          req,
+          res,
+          CODE.CREATED,
+          MSG.SUCCESS_CREATE_LEASSON,
+          lesson
+        )
+      }
       //req.session 배열 순회
       const sessionPromises = sessions.map(async (sessionObject) => {
         const sessionId = new mongoose.Types.ObjectId()
@@ -255,11 +264,16 @@ export default {
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_LESSON,
-        result,
-        error.stack
+        result
       )
     } catch (error) {
-      return resUtil.fail(req, res, error.CODE, error.MSG)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_CREATE_LESSON,
+        error.stack
+      )
     }
   },
 
