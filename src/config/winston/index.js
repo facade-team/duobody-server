@@ -1,4 +1,6 @@
 import winston from 'winston'
+import moment from 'moment'
+import util from 'util'
 import winstonDaily from 'winston-daily-rotate-file'
 import config from '..'
 
@@ -6,11 +8,29 @@ const logDir = config.PRODUCTION ? 'dist/logs/' : 'src/logs'
 
 const { combine, timestamp, printf } = winston.format
 
+const _timestamp = winston.format(function (info, opts) {
+  let prefix = util.format(
+    '[%s] [%s]',
+    moment().format('YYYY-MM-DD HH:mm:ss').trim(),
+    info.level.toUpperCase()
+  )
+  if (info.splat) {
+    info.message = util.format(
+      '%s %s',
+      prefix,
+      util.format(info.message, ...info.splat)
+    )
+  } else {
+    info.message = util.format('%s %s', prefix, info.message)
+  }
+  return info
+})
+
 const logFormat = printf((info) => {
   if (info.stack) {
-    return `${info.timestamp} ${info.level} - ${info.message}\n${info.stack}`
+    return `${info.level} - ${info.message}\n${info.stack}`
   }
-  return `${info.timestamp} ${info.level} - ${info.message}`
+  return `${info.level} - ${info.message}`
 })
 
 // FIXME: production 모드일때 시간이 제대로 안뜨는 문제가 있음
@@ -23,12 +43,7 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 30,
     colorize: false,
-    format: combine(
-      timestamp({
-        format: 'YYYY-MM-DD HH:MM:SS',
-      }),
-      logFormat
-    ),
+    format: combine(_timestamp(), logFormat),
   },
   error: {
     level: 'error',
