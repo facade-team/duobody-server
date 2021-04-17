@@ -6,7 +6,6 @@ const stringToDate = (dateString) => {
   const d = dateString.substr(6, 2)
 
   return moment(`${y}-${m}-${d}`, 'YYYY-MM-DD').valueOf()
-  // return new Date(Number(y), Number(m) - 1, Number(d), 0, 0, 0)
 }
 
 const stringToTomorrowDate = (dateString) => {

@@ -1,3 +1,4 @@
+import moment from 'moment'
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import inbodyService from '../services/inbodyService'
@@ -15,13 +16,18 @@ export default {
 
       startDate = stringToDate(startDate)
       endDate = stringToDate(endDate)
+      endDate = moment(endDate).add(1, 'days').valueOf()
 
       const result = await inbodyService.getInbodyInfoByDate(
         trainerId,
         traineeId,
-        startDate,
-        endDate
+        new Date(startDate),
+        new Date(endDate)
       )
+
+      if (!result.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY)
+      }
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
@@ -29,7 +35,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_INBODY
+        MSG.FAIL_READ_INBODY,
+        error.stack
       )
     }
   },
@@ -40,20 +47,29 @@ export default {
       const { traineeId } = req.params
       let { date } = req.params
 
-      date = stringToDate(date)
+      let startDate = stringToDate(date)
+      let endDate = moment(startDate).add(1, 'days').valueOf()
+
       const result = await inbodyService.getInbodyInfoByDate(
         trainerId,
         traineeId,
-        date
+        new Date(startDate),
+        new Date(endDate)
       )
+
+      if (!result.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY)
+      }
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
+      console.error(error)
       return resUtil.fail(
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_INBODY
+        MSG.FAIL_READ_INBODY,
+        error.stack
       )
     }
   },
@@ -97,7 +113,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_INBODY
+        MSG.FAIL_READ_INBODY,
+        error.stack
       )
     }
   },
@@ -129,6 +146,7 @@ export default {
       )
 
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_INBODY,
@@ -136,9 +154,11 @@ export default {
       )
     } catch (err) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_INBODY
+        MSG.FAIL_CREATE_INBODY,
+        error.stack
       )
     }
   },
@@ -159,6 +179,7 @@ export default {
       const result = await inbodyService.updateInbody(req.body)
 
       return resUtil.success(
+        req,
         res,
         CODE.CREATED,
         MSG.SUCCESS_UPDATE_INBODY,
@@ -166,9 +187,11 @@ export default {
       )
     } catch (err) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_UPDATE_INBODY
+        MSG.FAIL_UPDATE_INBODY,
+        error.stack
       )
     }
   },
@@ -191,9 +214,11 @@ export default {
       )
     } catch (err) {
       return resUtil.fail(
+        req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_DELETE_INBODY
+        MSG.FAIL_DELETE_INBODY,
+        error.stack
       )
     }
   },

@@ -59,6 +59,7 @@ export default {
     FAIL_CREATE_TRAINER: 'Trainer 생성에 실패하였습니다',
     EXIST_TRAINER: '이미 존재하는 Trainer입니다',
     NOT_EXIST_TRAINER: '존재하는 Trainer가 아닙니다',
+    ALLREADY_CONFIRMED: '이미 승인되었습니다',
     FAIL_CONFIRM_SECRET: 'Trainer Secret Code 인증에 실패하였습니다',
     WRONG_SECRET: '잘못된 비밀번호를 입력했습니다',
     WRONG_SECRET_CODE: '잘못된 인증코드를 입력했습니다',

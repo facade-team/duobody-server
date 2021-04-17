@@ -44,7 +44,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINEE
+        MSG.FAIL_CREATE_TRAINEE,
+        error.stack
       )
     }
   },
@@ -65,7 +66,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_TRAINEE
+        MSG.FAIL_READ_TRAINEE,
+        error.stack
       )
     }
   },
@@ -83,7 +85,13 @@ export default {
         trainee
       )
     } catch (error) {
-      return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.OUT_OF_VALUE)
+      return resUtil.fail(
+        req,
+        res,
+        CODE.BAD_REQUEST,
+        MSG.OUT_OF_VALUE,
+        error.stack
+      )
     }
   },
   // request : name, phoneNumber, address, age, height, traineeId
@@ -140,7 +148,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_UPDATE_TRAINEE
+        MSG.FAIL_UPDATE_TRAINEE,
+        error.stack
       )
     }
   },
@@ -189,7 +198,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_DELETE_TRAINEE
+        MSG.FAIL_DELETE_TRAINEE,
+        error.stack
       )
     }
   },

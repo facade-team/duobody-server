@@ -26,6 +26,10 @@ export default {
         nextMonth
       )
 
+      if (!lessons.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
+
       let result = []
 
       lessons.forEach((lesson) => {
@@ -39,7 +43,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -57,6 +62,10 @@ export default {
         today,
         tomorrow
       )
+
+      if (!lessons.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
 
       const result = []
 
@@ -78,7 +87,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },

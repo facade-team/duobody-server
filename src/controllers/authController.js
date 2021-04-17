@@ -50,6 +50,11 @@ export default {
       if (!trainer) {
         return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NOT_EXIST_TRAINER)
       }
+
+      if (trainer.isConfirmed) {
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.ALLREADY_CONFIRMED)
+      }
+
       const realSecret = trainer.secret
       if (realSecret === secret) {
         await trainer.updateOne({ isConfirmed: true })
