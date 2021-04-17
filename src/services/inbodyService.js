@@ -93,15 +93,6 @@ export default {
   endDate가 없으면 startDate에 해당하는 인바디 정보를 리턴
   */
     try {
-      if (endDate) {
-        // 기간을 설정하여 인바디 정보를 요청할 때
-        endDate.setDate(endDate.getDate() + 1)
-      } else {
-        // 날짜를 지정하여 인바디 정보를 요청할 때
-        endDate = new Date(startDate)
-        endDate.setDate(endDate.getDate() + 1)
-      }
-
       const result = await inbody
         .find()
         .where('trainerId')

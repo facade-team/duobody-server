@@ -26,6 +26,10 @@ export default {
         nextMonth
       )
 
+      if (!lessons.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
+
       let result = []
 
       lessons.forEach((lesson) => {
@@ -57,6 +61,10 @@ export default {
         today,
         tomorrow
       )
+
+      if (!lessons.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
 
       const result = []
 

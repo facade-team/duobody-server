@@ -47,6 +47,11 @@ export default {
         thisMonth,
         nextMonth
       )
+
+      if (!lessonDate.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
+
       const result = []
 
       lessonDate.forEach((object) => {
@@ -70,6 +75,9 @@ export default {
 
       const lessonDate = await lessonService.getLessonDate(traineeId)
 
+      if (!lessonDate.length) {
+        return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON)
+      }
       const result = []
 
       lessonDate.forEach((lesson) => {
@@ -102,7 +110,7 @@ export default {
 
       const result = await lessonService.getLessonByDate(traineeId, date)
 
-      if (!result[0]) {
+      if (!result.length) {
         return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, null)
       }
 
