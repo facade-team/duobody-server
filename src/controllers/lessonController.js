@@ -64,7 +64,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -92,7 +93,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -120,7 +122,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -141,7 +144,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -251,7 +255,8 @@ export default {
         res,
         CODE.CREATED,
         MSG.SUCCESS_CREATE_LESSON,
-        result
+        result,
+        error.stack
       )
     } catch (error) {
       return resUtil.fail(req, res, error.CODE, error.MSG)
@@ -285,7 +290,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_DELETE_LESSON
+        MSG.FAIL_DELETE_LESSON,
+        error.stack
       )
     }
   },

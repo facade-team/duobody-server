@@ -43,7 +43,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
@@ -86,7 +87,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_LESSON
+        MSG.FAIL_READ_LESSON,
+        error.stack
       )
     }
   },
