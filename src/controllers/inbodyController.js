@@ -35,7 +35,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_READ_INBODY
+        MSG.FAIL_READ_INBODY,
+        error.stack
       )
     }
   },
