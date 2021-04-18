@@ -54,12 +54,7 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 30,
     colorize: false,
-    format: combine(
-      timestamp({
-        format: 'YYYY-MM-DD HH:MM:SS',
-      }),
-      logFormat
-    ),
+    format: combine(_timestamp(), logFormat),
   },
   // 개발 시 console에 출력
   console: {
