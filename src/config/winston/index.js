@@ -4,12 +4,12 @@ import util from 'util'
 import winstonDaily from 'winston-daily-rotate-file'
 import config from '..'
 
-const logDir = config.PRODUCTION ? 'dist/logs/' : 'src/logs'
+const logDir = config.PRODUCTION ? 'logs/dist' : 'logs/src'
 
 const { combine, timestamp, printf } = winston.format
 
 const _timestamp = winston.format(function (info, opts) {
-  let prefix = util.format(
+  const prefix = util.format(
     '[%s] [%s]',
     moment().format('YYYY-MM-DD HH:mm:ss').trim(),
     info.level.toUpperCase()
