@@ -22,7 +22,7 @@ router.use('/messenger', messengerRouter)
 router.use('/trainer', trainerRouter)
 
 router.use((req, res, next) => {
-  return resUtil.fail(res, CODE.NOT_FOUND, MSG.ERROR_404)
+  return resUtil.fail(req, res, CODE.NOT_FOUND, MSG.ERROR_404)
 })
 
 router.use((err, req, res, next) => {
