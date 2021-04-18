@@ -8,29 +8,29 @@ const logDir = config.PRODUCTION ? 'logs/dist' : 'logs/src'
 
 const { combine, timestamp, printf } = winston.format
 
-const _timestamp = winston.format(function (info, opts) {
-  const prefix = util.format(
-    '[%s] [%s]',
-    moment().format('YYYY-MM-DD HH:mm:ss').trim(),
-    info.level.toUpperCase()
-  )
-  if (info.splat) {
-    info.message = util.format(
-      '%s %s',
-      prefix,
-      util.format(info.message, ...info.splat)
-    )
-  } else {
-    info.message = util.format('%s %s', prefix, info.message)
-  }
-  return info
-})
+// const _timestamp = winston.format(function (info, opts) {
+//   const prefix = util.format(
+//     '[%s] [%s]',
+//     moment().format('YYYY-MM-DD HH:mm:ss').trim(),
+//     info.level.toUpperCase()
+//   )
+//   if (info.splat) {
+//     info.message = util.format(
+//       '%s %s',
+//       prefix,
+//       util.format(info.message, ...info.splat)
+//     )
+//   } else {
+//     info.message = util.format('%s %s', prefix, info.message)
+//   }
+//   return info
+// })
 
 const logFormat = printf((info) => {
   if (info.stack) {
-    return `${info.level} - ${info.message}\n${info.stack}`
+    return `[${info.timestamp}] ${info.level} - ${info.message}\n${info.stack}`
   }
-  return `${info.level} - ${info.message}`
+  return `[${info.timestamp}] ${info.level} - ${info.message}`
 })
 
 // FIXME: production 모드일때 시간이 제대로 안뜨는 문제가 있음
@@ -43,7 +43,12 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 30,
     colorize: false,
-    format: combine(_timestamp(), logFormat),
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss',
+      }),
+      logFormat
+    ),
   },
   error: {
     level: 'error',
@@ -54,7 +59,12 @@ const options = {
     maxsize: 5242880, // 5MB
     maxFiles: 30,
     colorize: false,
-    format: combine(_timestamp(), logFormat),
+    format: combine(
+      timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss',
+      }),
+      logFormat
+    ),
   },
   // 개발 시 console에 출력
   console: {
