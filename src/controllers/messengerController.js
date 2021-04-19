@@ -17,9 +17,9 @@ export default {
       // trainerId 와 traineeId 로 생성된 chat room 이 없으면 먼저 room 생성
       if (!chatRoom) {
         chatRoom = await messengerService.createChatRoom(trainerId, traineeId)
+        // trainer 와 trainee 도큐먼트에 room id 값 insert
+        await messengerService.insertChatRoomId(trainerId, traineeId, chatRoom)
       }
-      // trainer 와 trainee 도큐먼트에 room id 값 insert
-      await messengerService.insertChatRoomId(trainerId, traineeId, chatRoom)
 
       return resUtil.success(
         req,

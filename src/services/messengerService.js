@@ -54,7 +54,10 @@ export default {
         _id: 0,
       }).populate({
         path: 'chatRoomIds',
-        populate: { path: 'trainerId traineeId', select: 'name' },
+        populate: {
+          path: 'trainerId traineeId messages',
+          select: 'name content',
+        },
       })
       return chatRoomList
     } catch (error) {
@@ -79,7 +82,7 @@ export default {
       // trainer 가 속한 chatRoom 이 맞는지 검사
       const chatRoom = await ChatRoom.findOne({ _id: chatRoomId, trainerId })
       // trainer 가 속한 chatRoom 이 아니면 에러 throw
-      if (!chatRoom) throw new Error()
+      if (!chatRoom) throw new Error('일치하는 채팅방이 아닙니다')
 
       const message = await Message.create({
         from: chatRoom.trainerId,
@@ -90,6 +93,13 @@ export default {
       // 최근 메시지가 배열의 앞에 삽임됨.
       chatRoom.messages.unshift(message._id)
       await chatRoom.save()
+
+      // 트레이너의 chatRoomIds 배열에 메시지를 보낸 chatRoom 을 맨 위로 끌어올림
+      const trainer = await Trainer.findById(trainerId)
+      const index = trainer.chatRoomIds.indexOf(chatRoomId)
+      trainer.chatRoomIds.splice(index, 1)
+      trainer.chatRoomIds.splice(0, 0, chatRoomId)
+      await trainer.save()
       return message
     } catch (error) {
       throw new Error(error)
