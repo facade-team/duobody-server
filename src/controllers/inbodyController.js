@@ -81,7 +81,6 @@ export default {
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
-      console.error(error)
       return resUtil.fail(
         req,
         res,
