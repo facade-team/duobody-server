@@ -18,14 +18,21 @@ export default {
       endDate = stringToDate(endDate)
       endDate = moment(endDate).add(1, 'days').valueOf()
 
-      const result = await inbodyService.getInbodyInfoByDate(
+      const inbody = await inbodyService.getInbodyInfoByDate(
         trainerId,
         traineeId,
         new Date(startDate),
         new Date(endDate)
       )
 
-      if (!result.length) {
+      const traineeName = (await traineeService.readOneTrainee(traineeId)).name
+
+      const result = {
+        name: traineeName,
+        inbody,
+      }
+
+      if (!inbody.length) {
         return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY)
       }
 
@@ -50,14 +57,25 @@ export default {
       let startDate = stringToDate(date)
       let endDate = moment(startDate).add(1, 'days').valueOf()
 
-      const result = await inbodyService.getInbodyInfoByDate(
+      const inbody = await inbodyService.getInbodyInfoByDate(
         trainerId,
         traineeId,
         new Date(startDate),
         new Date(endDate)
       )
+      const traineeName = (await traineeService.readOneTrainee(traineeId)).name
 
-      if (!result.length) {
+      const result = {
+        _id: inbody[0]._id,
+        name: traineeName,
+        weight: inbody[0].weight,
+        bmi: inbody[0].bmi,
+        fat: inbody[0].fat,
+        skeletalMuscle: inbody[0].skeletalMuscle,
+        date: inbody[0].date,
+      }
+
+      if (!inbody.length) {
         return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY)
       }
 
@@ -88,7 +106,19 @@ export default {
         return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.FAIL_READ_INBODY)
       }
 
-      const result = await inbodyService.getLatestInbody(trainerId, traineeId)
+      const inbody = await inbodyService.getLatestInbody(trainerId, traineeId)
+
+      const traineeName = (await traineeService.readOneTrainee(traineeId)).name
+
+      const result = {
+        _id: inbody._id,
+        name: traineeName,
+        weight: inbody.weight,
+        bmi: inbody.bmi,
+        fat: inbody.fat,
+        skeletalMuscle: inbody.skeletalMuscle,
+        date: inbody.date,
+      }
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_INBODY, result)
     } catch (error) {
