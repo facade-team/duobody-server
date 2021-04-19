@@ -39,7 +39,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINER
+        MSG.FAIL_CREATE_TRAINER,
+        err.stack
       )
     }
   },
@@ -72,7 +73,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINER
+        MSG.FAIL_CREATE_TRAINER,
+        err.stack
       )
     }
   },
@@ -103,7 +105,8 @@ export default {
         req,
         res,
         CODE.INTERNAL_SERVER_ERROR,
-        MSG.FAIL_CREATE_TRAINER
+        MSG.FAIL_CREATE_TRAINER,
+        err.stack
       )
     }
   },
