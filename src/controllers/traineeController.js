@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import config from '../config'
 import resUtil from '../utils/resUtil'
 import traineeService from '../services/traineeService'
+import messengerService from '../services/messengerService'
 import lessonService from '../services/lessonService'
 import lessonController from './lessonController'
 
@@ -174,6 +175,12 @@ export default {
         trainerId,
         traineeId
       )
+
+      // chatroom 삭제
+      await messengerService.deleteChatRoom(traineeId)
+
+      // message 삭제
+      await messengerService.deleteMessage(traineeId)
 
       const lessons = await lessonService.getLessons(traineeId)
 

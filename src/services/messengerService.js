@@ -105,4 +105,20 @@ export default {
       throw new Error(error)
     }
   },
+  deleteChatRoom: async (traineeId) => {
+    try {
+      traineeId = mongoose.Types.ObjectId(traineeId)
+      await ChatRoom.findOneAndDelete({ traineeId })
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  deleteMessage: async (traineeId) => {
+    try {
+      traineeId = mongoose.Types.ObjectId(traineeId)
+      await Message.deleteMany({ to: traineeId })
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
 }
