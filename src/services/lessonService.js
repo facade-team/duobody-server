@@ -163,8 +163,8 @@ export default {
       const result = await lesson.create({
         trainerId,
         traineeId,
-        start,
-        end,
+        start: startTime,
+        end: endTime,
       })
 
       return result
