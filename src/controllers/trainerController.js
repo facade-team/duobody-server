@@ -12,6 +12,31 @@ import {
 
 const { CODE, MSG } = config
 export default {
+  getAllTrainerLesson: async (req, res) => {
+    try {
+      const trainerId = req.decoded._id
+
+      const lessons = await lessonService.getAllTrainerLesson(trainerId)
+
+      let result = []
+
+      lessons.forEach((lesson) => {
+        const date = dateToString(lesson.start)
+        result.push({ _id: lesson._id, date: date })
+      })
+
+      return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)
+    } catch (error) {
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_READ_LESSON,
+        error.stack
+      )
+    }
+  },
+
   getTrainerLessonDateByMonth: async (req, res) => {
     try {
       const trainerId = req.decoded._id
@@ -34,7 +59,7 @@ export default {
 
       lessons.forEach((lesson) => {
         const date = dateToString(lesson.start)
-        result.push({ _id: lesson._id, date: date, trainerId })
+        result.push({ _id: lesson._id, date: date })
       })
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)

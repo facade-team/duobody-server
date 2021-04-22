@@ -109,7 +109,7 @@ export default {
   getTrainerLessonDateByMonth: async (trainerId, thisMonth, nextMonth) => {
     try {
       const result = await lesson
-        .find({}, { start: true, trainerId: true })
+        .find({}, { start: true })
         .where('trainerId')
         .equals(trainerId)
         .where('start')
@@ -137,6 +137,18 @@ export default {
           path: 'traineeId',
           select: '_id name',
         })
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  getAllTrainerLesson: async (trainerId) => {
+    try {
+      const result = await lesson
+        .find({ trainerId }, { start: true })
+        .sort('start')
 
       return result
     } catch (error) {
