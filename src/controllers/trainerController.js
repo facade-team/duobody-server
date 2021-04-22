@@ -103,6 +103,7 @@ export default {
           start: startTime,
           end: endTime,
           time: `${startTime} - ${endTime}`,
+          traineeId: lesson.traineeId._id,
         })
       })
 
