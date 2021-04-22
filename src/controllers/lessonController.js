@@ -24,8 +24,7 @@ const deleteOneLesson = async (lessonId) => {
 
   let promises = sessions.map((sessionId) => {
     return new Promise((resolve) => {
-      setService.deleteSetBySessionId(sessionId)
-      resolve()
+      setService.deleteSetBySessionId(sessionId).then(() => resolve())
     })
   })
 

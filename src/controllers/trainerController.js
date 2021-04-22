@@ -34,7 +34,7 @@ export default {
 
       lessons.forEach((lesson) => {
         const date = dateToString(lesson.start)
-        result.push({ _id: lesson._id, date: date })
+        result.push({ _id: lesson._id, date: date, trainerId })
       })
 
       return resUtil.success(req, res, CODE.OK, MSG.SUCCESS_READ_LESSON, result)

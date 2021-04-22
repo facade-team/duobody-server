@@ -109,7 +109,7 @@ export default {
   getTrainerLessonDateByMonth: async (trainerId, thisMonth, nextMonth) => {
     try {
       const result = await lesson
-        .find({}, { start: true })
+        .find({}, { start: true, trainerId: true })
         .where('trainerId')
         .equals(trainerId)
         .where('start')
