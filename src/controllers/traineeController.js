@@ -177,10 +177,12 @@ export default {
       )
 
       // chatroom 삭제
-      await messengerService.deleteChatRoom(traineeId)
+      const deleteChatRoomPromise = messengerService.deleteChatRoom(traineeId)
 
       // message 삭제
-      await messengerService.deleteMessage(traineeId)
+      const deleteMessagePromise = messengerService.deleteMessage(traineeId)
+
+      await Promise.all([deleteChatRoomPromise, deleteMessagePromise])
 
       const lessons = await lessonService.getLessons(traineeId)
 
