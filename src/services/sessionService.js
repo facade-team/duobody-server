@@ -56,13 +56,13 @@ export default {
     }
   },
 
-  pushSet: async (sessionId, setId) => {
+  pushSet: async (sessionId, setIds) => {
     try {
       const result = await session.findByIdAndUpdate(
         sessionId,
         {
           $push: {
-            sets: setId,
+            sets: setIds,
           },
         },
         { new: true }

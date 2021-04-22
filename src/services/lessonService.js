@@ -185,13 +185,13 @@ export default {
     }
   },
 
-  pushSession: async (lessonId, sessionId) => {
+  pushSession: async (lessonId, sessionIds) => {
     try {
       const result = await lesson.findByIdAndUpdate(
         lessonId,
         {
           $push: {
-            sessions: sessionId,
+            sessions: sessionIds,
           },
         },
         { new: true }
