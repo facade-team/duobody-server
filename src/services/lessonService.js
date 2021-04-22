@@ -135,8 +135,9 @@ export default {
         .lt(tomorrow)
         .populate({
           path: 'traineeId',
-          select: '_id name',
+          // select: ',
         })
+        .sort('start')
 
       return result
     } catch (error) {

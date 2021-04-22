@@ -98,7 +98,7 @@ export default {
         const startTime = getTime(lesson.start)
         const endTime = getTime(lesson.end)
         result.push({
-          _id: lesson.traineeId._id,
+          _id: lesson._id,
           name: lesson.traineeId.name,
           start: startTime,
           end: endTime,
