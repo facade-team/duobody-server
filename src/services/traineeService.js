@@ -55,16 +55,7 @@ export default {
       throw new Error(error)
     }
   },
-  updateTrainee: async (
-    traineeId,
-    name,
-    phoneNumber,
-    address,
-    age,
-    height,
-    note,
-    purpose
-  ) => {
+  updateTrainee: async (traineeId, name, phoneNumber, address, age, height) => {
     try {
       const trainee = await Trainee.findByIdAndUpdate(
         traineeId,
@@ -74,6 +65,19 @@ export default {
           address,
           age,
           height,
+        },
+        { new: true }
+      )
+      return trainee
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+  updateNoteAndPurpose: async (traineeId, note, purpose) => {
+    try {
+      const trainee = await Trainee.findByIdAndUpdate(
+        traineeId,
+        {
           note,
           purpose,
         },

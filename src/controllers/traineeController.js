@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import mongoose from 'mongoose'
 import config from '../config'
 import resUtil from '../utils/resUtil'
@@ -99,16 +100,7 @@ export default {
   updateTrainee: async (req, res) => {
     const trainerId = req.decoded._id
     // form 데이터 값 받아오고 에러핸들링
-    const {
-      name,
-      phoneNumber,
-      address,
-      age,
-      height,
-      traineeId,
-      note,
-      purpose,
-    } = req.body
+    const { name, phoneNumber, address, age, height, traineeId } = req.body
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
@@ -144,7 +136,42 @@ export default {
         phoneNumber,
         address,
         age,
-        height,
+        height
+      )
+      return resUtil.success(
+        req,
+        res,
+        CODE.CREATED,
+        MSG.SUCCESS_UPDATE_TRAINEE,
+        updatedTrainee
+      )
+    } catch (error) {
+      return resUtil.fail(
+        req,
+        res,
+        CODE.INTERNAL_SERVER_ERROR,
+        MSG.FAIL_UPDATE_TRAINEE,
+        error.stack
+      )
+    }
+  },
+  updateNoteAndPurpose: async (req, res) => {
+    const trainerId = req.decoded._id
+    const { traineeId, note, purpose } = req.body
+    try {
+      // 자신의 trainee 인지 확인
+      // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
+      const realTrainerId = await traineeService.getMyTrainerId(traineeId)
+      // realTrainerId 에 null 이 들어왔다는 것은 request 로 보낸 traineeId 값이 잘못됐다는 것
+      if (!realTrainerId) {
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.WRONG_TRAINEE_ID)
+      }
+      // trainee DB의 trainerId 와 접속한 트레이너의 Id 값이 맞지 않음
+      if (trainerId !== realTrainerId.toString()) {
+        return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.FAIL_READ_TRAINEE)
+      }
+      const updated = await traineeService.updateNoteAndPurpose(
+        traineeId,
         note,
         purpose
       )
@@ -153,7 +180,7 @@ export default {
         res,
         CODE.CREATED,
         MSG.SUCCESS_UPDATE_TRAINEE,
-        updatedTrainee
+        updated
       )
     } catch (error) {
       return resUtil.fail(
