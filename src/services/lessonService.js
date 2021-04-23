@@ -135,8 +135,21 @@ export default {
         .lt(tomorrow)
         .populate({
           path: 'traineeId',
-          select: '_id name',
+          // select: ',
         })
+        .sort('start')
+
+      return result
+    } catch (error) {
+      throw new Error(error)
+    }
+  },
+
+  getAllTrainerLesson: async (trainerId) => {
+    try {
+      const result = await lesson
+        .find({ trainerId }, { start: true })
+        .sort('start')
 
       return result
     } catch (error) {
@@ -173,13 +186,13 @@ export default {
     }
   },
 
-  pushSession: async (lessonId, sessionId) => {
+  pushSession: async (lessonId, sessionIds) => {
     try {
       const result = await lesson.findByIdAndUpdate(
         lessonId,
         {
           $push: {
-            sessions: sessionId,
+            sessions: sessionIds,
           },
         },
         { new: true }

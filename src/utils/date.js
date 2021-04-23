@@ -36,7 +36,7 @@ const dateToString = (date) => {
 }
 
 const getTime = (time) => {
-  const format = 'HH-mm'
+  const format = 'HH : mm'
 
   return moment(time).format(format)
 }

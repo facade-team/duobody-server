@@ -24,8 +24,7 @@ const deleteOneLesson = async (lessonId) => {
 
   let promises = sessions.map((sessionId) => {
     return new Promise((resolve) => {
-      setService.deleteSetBySessionId(sessionId)
-      resolve()
+      setService.deleteSetBySessionId(sessionId).then(() => resolve())
     })
   })
 
@@ -200,7 +199,7 @@ export default {
         )
       }
       //req.session 배열 순회
-      const sessionPromises = sessions.map(async (sessionObject) => {
+      sessions.map(async (sessionObject) => {
         const sessionId = new mongoose.Types.ObjectId()
         sessionIds.push(sessionId)
 
@@ -225,47 +224,22 @@ export default {
           const { part, field } = sessionObject
           return new Promise((resolve) => {
             //session 생성
-            const sessionResult = sessionService.insertSesssion(
-              sessionId,
-              lessonId,
-              part,
-              field
-            )
-            if (sessionResult) resolve(sessionResult)
-          }).then(async () => {
-            await Promise.all(
-              // 생성된 session배열 순회
-              values.map((setObject) => {
-                return new Promise((resolve) => {
-                  //생성한 session의 sets에 setId정보 push
-                  const sessionResult = sessionService.pushSet(
-                    sessionId,
-                    setObject._id
-                  )
-
-                  if (sessionResult) {
-                    resolve(sessionResult)
-                  }
-                })
+            sessionService
+              .insertSesssion(sessionId, lessonId, part, field)
+              .then((v) => {
+                resolve(v)
               })
-            )
+          }).then(async () => {
+            const setIds = values.map((setObject) => {
+              return setObject._id
+            })
+
+            await sessionService.pushSet(sessionId, setIds)
           })
         })
       })
 
-      await Promise.all(sessionPromises).then(async () => {
-        //sessionId 배열 순회
-        let promises = sessionIds.map((sessionId) => {
-          return new Promise((resolve) => {
-            // 생성된 lesson의 sessions에 sessionId push
-            const lessonResult = lessonService.pushSession(lessonId, sessionId)
-
-            resolve(lessonResult)
-          })
-        })
-
-        await Promise.all(promises)
-      })
+      await lessonService.pushSession(lessonId, sessionIds)
 
       const result = await lessonService.getLessonById(lessonId)
 

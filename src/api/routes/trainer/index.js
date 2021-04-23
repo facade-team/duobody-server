@@ -4,6 +4,8 @@ import trainerController from '../../../controllers/trainerController'
 
 const router = express.Router()
 
+router.get('/lesson', verifyToken, trainerController.getAllTrainerLesson)
+
 router.get(
   '/lesson/month/:month',
   verifyToken,
