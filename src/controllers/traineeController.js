@@ -13,10 +13,13 @@ export default {
   createTrainee: async (req, res) => {
     const trainerId = req.decoded._id
     const { name, phoneNumber, address, age, height } = req.body
+    let { note, purpose } = req.body
     // 모든 값이 null 이 아닌지 확인 -> 하나라도 null 이면 안 됨
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
+    if (!note) note = ''
+    if (!purpose) purpose = ''
     try {
       // 중복회원인지 검사 -> phoneNumber 로 판단
       const checkTrainee = await traineeService.checkTrainee(phoneNumber)
@@ -29,7 +32,9 @@ export default {
         phoneNumber,
         address,
         age,
-        height
+        height,
+        note,
+        purpose
       )
       // trainer 와 trainee 를 서로 연결시킴 ( id참조 )
       await traineeService.connectTrainerAndTrainee(trainerId, newTrainee.id)
@@ -100,7 +105,16 @@ export default {
   updateTrainee: async (req, res) => {
     const trainerId = req.decoded._id
     // form 데이터 값 받아오고 에러핸들링
-    const { name, phoneNumber, address, age, height, traineeId } = req.body
+    const {
+      name,
+      phoneNumber,
+      address,
+      age,
+      height,
+      traineeId,
+      note,
+      purpose,
+    } = req.body
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
@@ -136,7 +150,9 @@ export default {
         phoneNumber,
         address,
         age,
-        height
+        height,
+        note,
+        purpose
       )
       return resUtil.success(
         req,
