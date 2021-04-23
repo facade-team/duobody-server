@@ -105,16 +105,7 @@ export default {
   updateTrainee: async (req, res) => {
     const trainerId = req.decoded._id
     // form 데이터 값 받아오고 에러핸들링
-    const {
-      name,
-      phoneNumber,
-      address,
-      age,
-      height,
-      traineeId,
-      note,
-      purpose,
-    } = req.body
+    const { name, phoneNumber, address, age, height, traineeId } = req.body
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
@@ -150,9 +141,7 @@ export default {
         phoneNumber,
         address,
         age,
-        height,
-        note,
-        purpose
+        height
       )
       return resUtil.success(
         req,
@@ -173,7 +162,10 @@ export default {
   },
   updateNoteAndPurpose: async (req, res) => {
     const trainerId = req.decoded._id
-    const { traineeId, note, purpose } = req.body
+    const { traineeId } = req.body
+    let { note, purpose } = req.body
+    if (!note) note = ''
+    if (!purpose) purpose = ''
     try {
       // 자신의 trainee 인지 확인
       // realTrainerId: trainee 의 DB 에 저장된 trainerId 값
