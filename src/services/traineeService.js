@@ -55,7 +55,16 @@ export default {
       throw new Error(error)
     }
   },
-  updateTrainee: async (traineeId, name, phoneNumber, address, age, height) => {
+  updateTrainee: async (
+    traineeId,
+    name,
+    phoneNumber,
+    address,
+    age,
+    height,
+    note,
+    purpose
+  ) => {
     try {
       const trainee = await Trainee.findByIdAndUpdate(
         traineeId,
@@ -65,6 +74,8 @@ export default {
           address,
           age,
           height,
+          note,
+          purpose,
         },
         { new: true }
       )

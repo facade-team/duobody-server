@@ -99,7 +99,16 @@ export default {
   updateTrainee: async (req, res) => {
     const trainerId = req.decoded._id
     // form 데이터 값 받아오고 에러핸들링
-    const { name, phoneNumber, address, age, height, traineeId } = req.body
+    const {
+      name,
+      phoneNumber,
+      address,
+      age,
+      height,
+      traineeId,
+      note,
+      purpose,
+    } = req.body
     if (!name || !phoneNumber || !address || !age || !height) {
       return resUtil.fail(req, res, CODE.BAD_REQUEST, MSG.NULL_VALUE)
     }
@@ -135,7 +144,9 @@ export default {
         phoneNumber,
         address,
         age,
-        height
+        height,
+        note,
+        purpose
       )
       return resUtil.success(
         req,
