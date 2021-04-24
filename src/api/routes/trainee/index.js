@@ -22,6 +22,7 @@ router.get('/', verifyToken, traineeController.readMyTrainees)
 router.get('/:traineeId', verifyToken, traineeController.readOneTrainee)
 router.post('/', verifyToken, traineeController.createTrainee)
 router.put('/', verifyToken, traineeController.updateTrainee)
+router.put('/etc', verifyToken, traineeController.updateNoteAndPurpose)
 router.delete('/', verifyToken, traineeController.deleteTrainee)
 
 export default router
