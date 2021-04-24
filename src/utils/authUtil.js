@@ -27,7 +27,7 @@ const sendMail = (email) => {
 export const sendSecretMail = (name, secret) => {
   const email = {
     from: 'sonicdx886@gmail.com',
-    to: 'sonic886@naver.com',
+    to: 'alexko@iu.edu',
     subject: `[DUOBODY] ${name} 님 회원 인증 메일입니다`,
     html: `${name} 님의 회원 인증 코드는 <strong>${secret}</strong> 입니다.`,
   }
